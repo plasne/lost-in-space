@@ -1,7 +1,8 @@
 import { Effect } from './Effect';
 export declare class Effects extends Array<Effect> {
-    add(title: string, key: string, value: number, lifetime?: number): void;
+    add(title: string, key: string, value: number, lifetime?: number): Effect;
     sum(key: string): number;
+    contains(key: string): boolean;
     decrement(key: string, value: number, removeIfZero?: boolean): void;
 }
 interface Constructor<T> {

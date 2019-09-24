@@ -31,7 +31,7 @@ public class Network : MonoBehaviour
     [Serializable]
     public class HelmPayload
     {
-        public int throttle;
+        public int speed;
         public int yaw;
         public int pitch;
     }
@@ -178,7 +178,7 @@ public class Network : MonoBehaviour
             Elapsed = 0.0f;
             ConnectionLamp.SetLampColor("yellow");
             TcpClient = new TcpClient();
-            TcpClientConnectTask = TcpClient.ConnectAsync("127.0.0.1", 5000);
+            TcpClientConnectTask = TcpClient.ConnectAsync("gameserver", 5000);
         }
 
         // announce connection failure

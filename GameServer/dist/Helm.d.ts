@@ -1,4 +1,4 @@
-import { Ship } from './Ship';
+import { Station } from './Station';
 export declare class FromHelmInterface {
     throttle: number;
     yaw: number;
@@ -17,9 +17,9 @@ export declare class ToHelmInterface {
     crew: number;
     crewIsEvac: boolean;
     jumpIsAvailable: boolean;
-    upgrade1IsAvailable: boolean;
-    upgrade2IsAvailable: boolean;
-    upgrade3IsAvailable: boolean;
+    action1IsAvailable: boolean;
+    action2IsAvailable: boolean;
+    action3IsAvailable: boolean;
     foreShields: number;
     maxForeShields: number;
     aftShields: number;
@@ -32,14 +32,12 @@ export declare class ToHelmInterface {
     maxReserve: number;
 }
 export declare class ToMainViewScreen {
-    throttle: number;
+    speed: number;
     yaw: number;
     pitch: number;
 }
-export declare class Helm {
-    private _ship;
-    protected readonly ship: Ship;
+export declare class Helm extends Station {
+    readonly prefix: string;
     toInterface(): void;
     fromInterface(from: FromHelmInterface): void;
-    constructor(ship: Ship);
 }

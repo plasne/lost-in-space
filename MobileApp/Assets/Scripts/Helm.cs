@@ -32,9 +32,9 @@ public class Helm : MonoBehaviour
         public int crew;
         public bool crewIsEvac;
         public bool jumpIsAvailable;
-        public bool upgrade1IsAvailable;
-        public bool upgrade2IsAvailable;
-        public bool upgrade3IsAvailable;
+        public bool action1IsAvailable;
+        public bool action2IsAvailable;
+        public bool action3IsAvailable;
         public int foreShields;
         public int maxForeShields;
         public int aftShields;
@@ -45,6 +45,17 @@ public class Helm : MonoBehaviour
         public int maxStarShields;
         public int reserve;
         public int maxReserve;
+    }
+
+    [Serializable]
+    public class TelemetryPayload
+    {
+        public int posx;
+        public int posy;
+        public int posz;
+        public int rotx;
+        public int roty;
+        public int rotz;
     }
 
     private Network Network { get; set; }
@@ -58,6 +69,9 @@ public class Helm : MonoBehaviour
     private LitButton Evac { get; set; }
     private ShieldDisplay Shields { get; set; }
     private PowerWheel ReservePower { get; set; }
+    private Button Action1 { get; set; }
+    private Button Action2 { get; set; }
+    private Button Action3 { get; set; }
 
     private double Elapsed { get; set; }
 
@@ -82,6 +96,9 @@ public class Helm : MonoBehaviour
         Evac = GameObject.Find("Evac").GetComponent<LitButton>();
         Shields = GameObject.Find("Shields").GetComponent<ShieldDisplay>();
         ReservePower = GameObject.Find("ReservePower").GetComponent<PowerWheel>();
+        Action1 = GameObject.Find("Action1").GetComponent<Button>();
+        Action2 = GameObject.Find("Action2").GetComponent<Button>();
+        Action3 = GameObject.Find("Action3").GetComponent<Button>();
         PosX = GameObject.Find("POS-X").GetComponent<FourDigit>();
         PosY = GameObject.Find("POS-Y").GetComponent<FourDigit>();
         PosZ = GameObject.Find("POS-Z").GetComponent<FourDigit>();
@@ -150,9 +167,9 @@ public class Helm : MonoBehaviour
         Crew.SetToNumber(payload.crew);
         Jump.SetLampColor(payload.jumpIsAvailable);
         Evac.SetLampColor(payload.crewIsEvac);
-        // upgrade1
-        // upgrade2
-        // upgrade3
+        Action1.interactable = payload.action1IsAvailable;
+        Action2.interactable = payload.action2IsAvailable;
+        Action3.interactable = payload.action3IsAvailable;
         Shields.SetShields(
             payload.foreShields, payload.maxForeShields,
             payload.aftShields, payload.maxAftShields,
@@ -160,6 +177,32 @@ public class Helm : MonoBehaviour
             payload.starShields, payload.maxStarShields
         );
         ReservePower.SetPowerLevel(payload.reserve, payload.maxReserve);
+    }
+
+    private void ClickButton(string id)
+    {
+        var msg = new Message<ButtonClick>()
+        {
+            c = "button",
+            p = new ButtonClick() { id = id },
+            e = 0
+        };
+        Network.Send(msg);
+    }
+
+    public void DoAction1()
+    {
+        ClickButton("helm.action1");
+    }
+
+    public void DoAction2()
+    {
+        ClickButton("helm.action2");
+    }
+
+    public void DoAction3()
+    {
+        ClickButton("helm.action3");
     }
 
 }

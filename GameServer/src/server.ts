@@ -34,6 +34,11 @@ global.logger = winston.createLogger({
     transports: [transport]
 });
 
+// define the generic button click
+class ButtonClick {
+    public id: string = '';
+}
+
 // startup the network
 console.log(`LOG_LEVEL is "${LOG_LEVEL}".`);
 const server = new TcpServer({
@@ -50,6 +55,12 @@ server
     })
     .on('connect', (client: IClient) => {
         global.logger.info(`hello from ${client.id}...`);
+    })
+    .on('disconnect', (client: IClient) => {
+        if (client) {
+            global.logger.info(`disconnect from ${client.id}...`);
+            server.remove(client);
+        }
     })
     .on('ack', (msg: IMessage) => {
         global.logger.info(`ack for ${msg.c}`);
@@ -72,6 +83,12 @@ server
         for (var client of clients) {
             server.tell(client, 'telemetry', payload);
         }
+    })
+    .on('cmd:button', (_: IClient, payload: ButtonClick) => {
+        var qualified = payload.id.split('.');
+        var module = qualified[0];
+        var action = qualified[1];
+        ship[module].click(action);
     });
 
 // log settings

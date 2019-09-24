@@ -31,9 +31,17 @@ var Engine = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Engine.prototype, "thrust", {
-        // thrust is the speed at which the ship moves
+        // thrust is the speed at which the ship moves but is tempered by throttle
         get: function () {
             return this.ship.effects.sum(this.prefix + ".thrust");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Engine.prototype, "booster", {
+        // booster is the speed at which the ships moves regardless of throttle
+        get: function () {
+            return this.ship.effects.sum(this.prefix + ".booster");
         },
         enumerable: true,
         configurable: true
@@ -46,6 +54,10 @@ var Engine = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    // returns the total speed based on the throttle
+    Engine.prototype.speed = function (throttle) {
+        return throttle * this.thrust + this.booster;
+    };
     Engine.prototype.tick = function () {
         _super.prototype.tick.call(this);
         // consume power, produce thrust and emit

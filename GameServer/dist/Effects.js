@@ -34,6 +34,7 @@ var Effects = /** @class */ (function (_super) {
         if (lifetime > 0)
             effect.tags.push(new Tag_1.Tag('lifetime', lifetime));
         this.push(effect);
+        return effect;
     };
     // sum all tags with a specific key across all upgrades
     Effects.prototype.sum = function (key) {
@@ -47,6 +48,18 @@ var Effects = /** @class */ (function (_super) {
             }
         }
         return total;
+    };
+    // search all effects for the existance of a key
+    Effects.prototype.contains = function (key) {
+        for (var _i = 0, _a = this; _i < _a.length; _i++) {
+            var effect = _a[_i];
+            for (var _b = 0, _c = effect.tags; _b < _c.length; _b++) {
+                var tag = _c[_b];
+                if (tag.key === key)
+                    return true;
+            }
+        }
+        return false;
     };
     // decrement and potentially remove
     Effects.prototype.decrement = function (key, value, removeIfZero) {

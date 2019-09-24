@@ -6,14 +6,24 @@ export class Engine extends PoweredSystem {
         return 'engine';
     }
 
-    // thrust is the speed at which the ship moves
+    // thrust is the speed at which the ship moves but is tempered by throttle
     get thrust(): number {
         return this.ship.effects.sum(`${this.prefix}.thrust`);
+    }
+
+    // booster is the speed at which the ships moves regardless of throttle
+    get booster(): number {
+        return this.ship.effects.sum(`${this.prefix}.booster`);
     }
 
     // efficiency rating = the amount of thrust produced per each power
     get efficiency(): number {
         return this.ship.effects.sum(`${this.prefix}.efficiency`);
+    }
+
+    // returns the total speed based on the throttle
+    public speed(throttle: number) {
+        return throttle * this.thrust + this.booster;
     }
 
     public tick() {

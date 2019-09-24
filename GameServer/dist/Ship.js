@@ -6,6 +6,7 @@ var Engine_1 = require("./Engine");
 var JumpEngine_1 = require("./JumpEngine");
 var Helm_1 = require("./Helm");
 var Thrusters_1 = require("./Thrusters");
+var Action_1 = require("./Action");
 var Ship = /** @class */ (function () {
     function Ship(server) {
         var _this = this;
@@ -14,6 +15,7 @@ var Ship = /** @class */ (function () {
         this._server = server;
         // instantiate stations
         this.helm = new Helm_1.Helm(this);
+        this.helm.action1 = new Action_1.BoosterAction(this);
         // instantiate systems
         this.reactor = new Reactor_1.Reactor(this);
         this.engine = new Engine_1.Engine(this);
@@ -22,7 +24,7 @@ var Ship = /** @class */ (function () {
         // every 10 seconds: tick()
         setInterval(function () {
             _this.tick();
-        }, 1000);
+        }, 10000);
     }
     Object.defineProperty(Ship.prototype, "server", {
         get: function () {

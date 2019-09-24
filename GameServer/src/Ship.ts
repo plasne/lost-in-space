@@ -5,6 +5,7 @@ import { JumpEngine } from './JumpEngine';
 import { TcpServer } from 'tcp-comm';
 import { Helm } from './Helm';
 import { Thrusters } from './Thrusters';
+import { BoosterAction } from './Action';
 
 export declare interface Ship {
     on(event: 'message', listener: (payload: any) => void): this;
@@ -52,6 +53,7 @@ export class Ship {
 
         // instantiate stations
         this.helm = new Helm(this);
+        this.helm.action1 = new BoosterAction(this);
 
         // instantiate systems
         this.reactor = new Reactor(this);
@@ -62,6 +64,6 @@ export class Ship {
         // every 10 seconds: tick()
         setInterval(() => {
             this.tick();
-        }, 1000);
+        }, 10000);
     }
 }

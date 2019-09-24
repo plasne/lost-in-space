@@ -1,5 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
+var Station_1 = require("./Station");
 var FromHelmInterface = /** @class */ (function () {
     function FromHelmInterface() {
         this.throttle = 0.0;
@@ -23,9 +37,9 @@ var ToHelmInterface = /** @class */ (function () {
         this.crew = 0;
         this.crewIsEvac = false;
         this.jumpIsAvailable = false;
-        this.upgrade1IsAvailable = false;
-        this.upgrade2IsAvailable = false;
-        this.upgrade3IsAvailable = false;
+        this.action1IsAvailable = false;
+        this.action2IsAvailable = false;
+        this.action3IsAvailable = false;
         this.foreShields = 0;
         this.maxForeShields = 0;
         this.aftShields = 0;
@@ -42,21 +56,21 @@ var ToHelmInterface = /** @class */ (function () {
 exports.ToHelmInterface = ToHelmInterface;
 var ToMainViewScreen = /** @class */ (function () {
     function ToMainViewScreen() {
-        this.throttle = 0.0;
+        this.speed = 0.0;
         this.yaw = 0.0;
         this.pitch = 0.0;
     }
     return ToMainViewScreen;
 }());
 exports.ToMainViewScreen = ToMainViewScreen;
-var Helm = /** @class */ (function () {
-    function Helm(ship) {
-        this._ship = ship;
+var Helm = /** @class */ (function (_super) {
+    __extends(Helm, _super);
+    function Helm() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(Helm.prototype, "ship", {
-        // reference to the ship
+    Object.defineProperty(Helm.prototype, "prefix", {
         get: function () {
-            return this._ship;
+            return 'helm';
         },
         enumerable: true,
         configurable: true
@@ -73,9 +87,9 @@ var Helm = /** @class */ (function () {
             crew: 100,
             crewIsEvac: true,
             jumpIsAvailable: false,
-            upgrade1IsAvailable: false,
-            upgrade2IsAvailable: false,
-            upgrade3IsAvailable: false,
+            action1IsAvailable: this.action1 ? this.action1.isAvailable : false,
+            action2IsAvailable: this.action2 ? this.action2.isAvailable : false,
+            action3IsAvailable: this.action3 ? this.action3.isAvailable : false,
             foreShields: 3,
             maxForeShields: 4,
             aftShields: 3,
@@ -126,25 +140,20 @@ var Helm = /** @class */ (function () {
             this.ship.thrusters.pendingPower =
                 from.thrusterPower - this.ship.thrusters.power;
         }
-        // if jump is pressed, do it
-        // if evac is pressed, do it
-        // if upgrade1 is pressed, do it
-        // if upgrade2 is pressed, do it
-        // if upgrade3 is pressed, do it
         // send the packet to the helm interfaces
         this.toInterface();
         // send the packet to the main view screen
         var mainViewScreen = this.ship.server.clients.find(function (c) { return c.id == 'mainViewScreen'; });
         if (mainViewScreen) {
             var toMainViewScreen = {
-                throttle: from.throttle * this.ship.engine.thrust,
+                speed: this.ship.engine.speed(from.throttle),
                 yaw: from.yaw * this.ship.thrusters.agility * 0.75,
                 pitch: from.pitch * this.ship.thrusters.agility
             };
-            global.logger.info("to: " + mainViewScreen.id + " - " + toMainViewScreen.yaw + " x " + toMainViewScreen.pitch + " @ " + toMainViewScreen.throttle);
+            global.logger.info("to: " + mainViewScreen.id + " - " + toMainViewScreen.yaw + " x " + toMainViewScreen.pitch + " @ " + toMainViewScreen.speed);
             this.ship.server.tell(mainViewScreen, 'helm', toMainViewScreen);
         }
     };
     return Helm;
-}());
+}(Station_1.Station));
 exports.Helm = Helm;

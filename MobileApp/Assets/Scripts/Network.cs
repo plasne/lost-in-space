@@ -27,14 +27,9 @@ public class Network : MonoBehaviour
     }
 
     [Serializable]
-    public class TelemetryPayload
+    public class ButtonClick
     {
-        public int posx;
-        public int posy;
-        public int posz;
-        public int rotx;
-        public int roty;
-        public int rotz;
+        public string id;
     }
 
     private string Id { get; set; }
@@ -167,7 +162,7 @@ public class Network : MonoBehaviour
             Elapsed = 0.0f;
             ConnectionLamp.SetLampColor("yellow");
             TcpClient = new TcpClient();
-            TcpClientConnectTask = TcpClient.ConnectAsync("127.0.0.1", 5000);
+            TcpClientConnectTask = TcpClient.ConnectAsync("gameserver", 5000);
         }
 
         // announce connection failure

@@ -34,6 +34,13 @@ global.logger = winston.createLogger({
     level: LOG_LEVEL,
     transports: [transport]
 });
+// define the generic button click
+var ButtonClick = /** @class */ (function () {
+    function ButtonClick() {
+        this.id = '';
+    }
+    return ButtonClick;
+}());
 // startup the network
 console.log("LOG_LEVEL is \"" + LOG_LEVEL + "\".");
 var server = new tcp_comm_1.TcpServer({
@@ -48,6 +55,12 @@ server
 })
     .on('connect', function (client) {
     global.logger.info("hello from " + client.id + "...");
+})
+    .on('disconnect', function (client) {
+    if (client) {
+        global.logger.info("disconnect from " + client.id + "...");
+        server.remove(client);
+    }
 })
     .on('ack', function (msg) {
     global.logger.info("ack for " + msg.c);
@@ -67,6 +80,12 @@ server
         var client = clients_1[_i];
         server.tell(client, 'telemetry', payload);
     }
+})
+    .on('cmd:button', function (_, payload) {
+    var qualified = payload.id.split('.');
+    var module = qualified[0];
+    var action = qualified[1];
+    ship[module].click(action);
 });
 // log settings
 global.logger.info("PORT is \"" + server.port + "\".");

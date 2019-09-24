@@ -14,6 +14,7 @@ export class Effects extends Array<Effect> {
         effect.tags.push(new Tag(key, value));
         if (lifetime > 0) effect.tags.push(new Tag('lifetime', lifetime));
         this.push(effect);
+        return effect;
     }
 
     // sum all tags with a specific key across all upgrades
@@ -25,6 +26,16 @@ export class Effects extends Array<Effect> {
             }
         }
         return total;
+    }
+
+    // search all effects for the existance of a key
+    public contains(key: string) {
+        for (var effect of this) {
+            for (var tag of effect.tags) {
+                if (tag.key === key) return true;
+            }
+        }
+        return false;
     }
 
     // decrement and potentially remove

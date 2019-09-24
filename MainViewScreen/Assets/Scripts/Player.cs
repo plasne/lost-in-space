@@ -11,9 +11,8 @@ public class Player : MonoBehaviour
     private Rigidbody Rigidbody { get; set; }
 
     private float Elapsed { get; set; }
-    private TelemetryPayload LastTelemetryPayload { get; set; }
 
-    public float Throttle { get; set; }
+    public float Speed { get; set; }
     public float Yaw { get; set; }
     public float Pitch { get; set; }
 
@@ -47,17 +46,13 @@ public class Player : MonoBehaviour
                 rotx = Mathf.CeilToInt(rot.y), // x and y are inverted
             };
             payload.roty = (rot.x < 100) ? Mathf.CeilToInt(rot.x * -1) : Mathf.CeilToInt(360 - rot.x);
-            if (LastTelemetryPayload == null || LastTelemetryPayload.IsDifferent(payload))
+            var msg = new Message<TelemetryPayload>()
             {
-                var msg = new Message<TelemetryPayload>()
-                {
-                    c = "telemetry",
-                    p = payload,
-                    e = 0
-                };
-                Network.Send(msg);
-                LastTelemetryPayload = payload;
-            }
+                c = "telemetry",
+                p = payload,
+                e = 0
+            };
+            Network.Send(msg);
 
         }
 
@@ -68,7 +63,7 @@ public class Player : MonoBehaviour
         Quaternion rotation = Rigidbody.transform.localRotation;
 
         // apply relative force and torque
-        Rigidbody.AddRelativeForce(new Vector3(0.0f, 0.0f, Throttle), ForceMode.Force);
+        Rigidbody.AddRelativeForce(new Vector3(0.0f, 0.0f, Speed), ForceMode.Force);
         Rigidbody.AddRelativeTorque(new Vector3(0, Yaw * 3, 0.0f), ForceMode.Force);
 
         if (rotation.x > -0.3 && rotation.x < 0.3)
@@ -91,7 +86,7 @@ public class Player : MonoBehaviour
 
     public void ApplyHelm(HelmPayload payload)
     {
-        this.Throttle = payload.throttle;
+        this.Speed = payload.speed;
         this.Yaw = payload.yaw;
         this.Pitch = payload.pitch;
     }

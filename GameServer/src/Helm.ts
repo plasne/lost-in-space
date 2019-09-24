@@ -1,4 +1,4 @@
-import { Ship } from './Ship';
+import { Station } from './Station';
 
 export class FromHelmInterface {
     public throttle: number = 0.0;
@@ -19,9 +19,9 @@ export class ToHelmInterface {
     public crew: number = 0;
     public crewIsEvac: boolean = false;
     public jumpIsAvailable: boolean = false;
-    public upgrade1IsAvailable: boolean = false;
-    public upgrade2IsAvailable: boolean = false;
-    public upgrade3IsAvailable: boolean = false;
+    public action1IsAvailable: boolean = false;
+    public action2IsAvailable: boolean = false;
+    public action3IsAvailable: boolean = false;
     public foreShields: number = 0;
     public maxForeShields: number = 0;
     public aftShields: number = 0;
@@ -35,17 +35,14 @@ export class ToHelmInterface {
 }
 
 export class ToMainViewScreen {
-    public throttle: number = 0.0;
+    public speed: number = 0.0;
     public yaw: number = 0.0;
     public pitch: number = 0.0;
 }
 
-export class Helm {
-    private _ship: Ship;
-
-    // reference to the ship
-    protected get ship(): Ship {
-        return this._ship;
+export class Helm extends Station {
+    public get prefix(): string {
+        return 'helm';
     }
 
     public toInterface() {
@@ -62,9 +59,9 @@ export class Helm {
             crew: 100,
             crewIsEvac: true,
             jumpIsAvailable: false,
-            upgrade1IsAvailable: false,
-            upgrade2IsAvailable: false,
-            upgrade3IsAvailable: false,
+            action1IsAvailable: this.action1 ? this.action1.isAvailable : false,
+            action2IsAvailable: this.action2 ? this.action2.isAvailable : false,
+            action3IsAvailable: this.action3 ? this.action3.isAvailable : false,
             foreShields: 3,
             maxForeShields: 4,
             aftShields: 3,
@@ -112,12 +109,6 @@ export class Helm {
                 from.thrusterPower - this.ship.thrusters.power;
         }
 
-        // if jump is pressed, do it
-        // if evac is pressed, do it
-        // if upgrade1 is pressed, do it
-        // if upgrade2 is pressed, do it
-        // if upgrade3 is pressed, do it
-
         // send the packet to the helm interfaces
         this.toInterface();
 
@@ -127,18 +118,14 @@ export class Helm {
         );
         if (mainViewScreen) {
             var toMainViewScreen: ToMainViewScreen = {
-                throttle: from.throttle * this.ship.engine.thrust,
+                speed: this.ship.engine.speed(from.throttle),
                 yaw: from.yaw * this.ship.thrusters.agility * 0.75,
                 pitch: from.pitch * this.ship.thrusters.agility
             };
             global.logger.info(
-                `to: ${mainViewScreen.id} - ${toMainViewScreen.yaw} x ${toMainViewScreen.pitch} @ ${toMainViewScreen.throttle}`
+                `to: ${mainViewScreen.id} - ${toMainViewScreen.yaw} x ${toMainViewScreen.pitch} @ ${toMainViewScreen.speed}`
             );
             this.ship.server.tell(mainViewScreen, 'helm', toMainViewScreen);
         }
-    }
-
-    constructor(ship: Ship) {
-        this._ship = ship;
     }
 }

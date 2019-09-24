@@ -9,6 +9,9 @@
 # ignore Temp
 **/Temp/*
 
+# ignore compiled
+**/out/*
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/

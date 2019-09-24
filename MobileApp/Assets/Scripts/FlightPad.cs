@@ -30,40 +30,45 @@ public class FlightPad : MonoBehaviour
             var bottom = ScreenPos.y + Dimensions.y; // 300 + -250 = 50
 
             // calculate desired flight pad changes
-            var pos = Input.GetTouch(0).position;
-            if (pos.x > left && pos.x < right && pos.y > bottom && pos.y < top)
+            for (int i = 0; i < Input.touchCount; i++)
             {
+                // check touch 0 and touch 1
+                var pos = Input.GetTouch(i).position;
+                if (pos.x > left && pos.x < right && pos.y > bottom && pos.y < top)
+                {
 
-                // calc yaw; allow for 120 (of the 600) middle pixels to be neutral
-                float yaw = (pos.x - ScreenPos.x);
-                if (yaw > 60)
-                {
-                    Yaw = Mathf.CeilToInt((yaw - 60) / 240 * 100);
-                }
-                else if (yaw < -60)
-                {
-                    Yaw = Mathf.FloorToInt((yaw + 60) / 240 * 100);
-                }
-                else
-                {
-                    Yaw = 0;
-                }
+                    // calc yaw; allow for 120 (of the 600) middle pixels to be neutral
+                    float yaw = (pos.x - ScreenPos.x);
+                    if (yaw > 60)
+                    {
+                        Yaw = Mathf.CeilToInt((yaw - 60) / 240 * 100);
+                    }
+                    else if (yaw < -60)
+                    {
+                        Yaw = Mathf.FloorToInt((yaw + 60) / 240 * 100);
+                    }
+                    else
+                    {
+                        Yaw = 0;
+                    }
 
-                // calc pitch; allow for 100 (of the 500) middle pixels to be neutral
-                float pitch = (pos.y - ScreenPos.y);
-                if (pitch > 50)
-                {
-                    Pitch = Mathf.CeilToInt((pitch - 50) / 200 * 100);
-                }
-                else if (pitch < -50)
-                {
-                    Pitch = Mathf.FloorToInt((pitch + 50) / 200 * 100);
-                }
-                else
-                {
-                    Pitch = 0;
-                }
+                    // calc pitch; allow for 100 (of the 500) middle pixels to be neutral
+                    float pitch = (pos.y - ScreenPos.y);
+                    if (pitch > 50)
+                    {
+                        Pitch = Mathf.CeilToInt((pitch - 50) / 200 * 100);
+                    }
+                    else if (pitch < -50)
+                    {
+                        Pitch = Mathf.FloorToInt((pitch + 50) / 200 * 100);
+                    }
+                    else
+                    {
+                        Pitch = 0;
+                    }
 
+                    break;
+                }
             }
 
         }
