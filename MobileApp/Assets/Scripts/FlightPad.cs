@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,10 @@ public class FlightPad : MonoBehaviour
 
     void Start()
     {
-        Init();
+        var camera = Resources.FindObjectsOfTypeAll<Camera>().First(c => c.name == "HelmCamera");
+        ScreenPos = camera.WorldToScreenPoint(transform.position);
+        RectTransform rt = (RectTransform)transform;
+        Dimensions = rt.rect;
     }
 
     void Update()
@@ -78,13 +82,6 @@ public class FlightPad : MonoBehaviour
             Pitch = 0;
         }
 
-    }
-
-    public void Init()
-    {
-        ScreenPos = Camera.main.WorldToScreenPoint(transform.position);
-        RectTransform rt = (RectTransform)transform;
-        Dimensions = rt.rect;
     }
 
 }

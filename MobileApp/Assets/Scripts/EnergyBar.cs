@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,7 +55,8 @@ public class EnergyBar : MonoBehaviour
 
     public void Init()
     {
-        ScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+        var camera = Resources.FindObjectsOfTypeAll<Camera>().First(c => c.name == "HelmCamera");
+        ScreenPos = camera.WorldToScreenPoint(transform.position);
         RectTransform rt = (RectTransform)transform;
         Dimensions = rt.rect;
     }
