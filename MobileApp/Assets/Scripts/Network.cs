@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -32,6 +33,17 @@ public class Network : MonoBehaviour
         public string id;
     }
 
+    [Serializable]
+    public class TelemetryPayload
+    {
+        public int posx;
+        public int posy;
+        public int posz;
+        public int rotx;
+        public int roty;
+        public int rotz;
+    }
+
     private string Id { get; set; }
     private double Elapsed { get; set; }
 
@@ -43,6 +55,7 @@ public class Network : MonoBehaviour
 
     private Lamp ConnectionLamp { get; set; }
     private Helm Helm { get; set; }
+    private Sensors Sensors { get; set; }
 
     public void Send(Message msg)
     {
@@ -77,12 +90,17 @@ public class Network : MonoBehaviour
         if (generic.c == "telemetry")
         {
             var actual = JsonUtility.FromJson<Message<TelemetryPayload>>(json);
-            Helm.ReceiveTelemetry(actual.p);
+            if (Helm.isActiveAndEnabled) Helm.ReceiveTelemetry(actual.p);
+            if (Sensors.isActiveAndEnabled) Sensors.ReceiveTelemetry(actual.p);
         }
-        if (generic.c == "helm")
+        if (generic.c == "helm" && Helm.isActiveAndEnabled)
         {
             var actual = JsonUtility.FromJson<Message<FromHelmStation>>(json);
             Helm.ReceiveFromHelmStation(actual.p);
+        }
+        if (generic.c == "zone")
+        {
+            Sensors.ReceiveZone(json);
         }
 
         // take note of the last received message
@@ -145,7 +163,8 @@ public class Network : MonoBehaviour
 
         // references
         ConnectionLamp = GameObject.Find("ConnectionLamp").GetComponent<Lamp>();
-        Helm = GameObject.Find("Helm").GetComponent<Helm>();
+        Helm = Resources.FindObjectsOfTypeAll<Helm>().First();
+        Sensors = Resources.FindObjectsOfTypeAll<Sensors>().First();
 
         // generate an id for this mobile app
         Id = Guid.NewGuid().ToString();

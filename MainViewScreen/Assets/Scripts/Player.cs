@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 
         // get references
         Network = GameObject.Find("Game").GetComponent<Network>();
-        PlayerObject = GameObject.Find("player");
+        PlayerObject = GameObject.Find("Player");
         Rigidbody = PlayerObject.GetComponentInChildren<Rigidbody>();
 
     }
@@ -40,12 +40,13 @@ public class Player : MonoBehaviour
             var rot = Rigidbody.transform.rotation.eulerAngles;
             TelemetryPayload payload = new TelemetryPayload()
             {
-                posx = Mathf.CeilToInt(pos.x / 1000),
-                posy = Mathf.CeilToInt(pos.y / 1000),
-                posz = Mathf.CeilToInt(pos.z / 1000),
-                rotx = Mathf.CeilToInt(rot.y), // x and y are inverted
+                posx = Mathf.CeilToInt(pos.x),
+                posy = Mathf.CeilToInt(pos.y),
+                posz = Mathf.CeilToInt(pos.z),
+                rotx = Mathf.CeilToInt(rot.x),
+                roty = Mathf.CeilToInt(rot.y),
+                rotz = Mathf.CeilToInt(rot.z),
             };
-            payload.roty = (rot.x < 100) ? Mathf.CeilToInt(rot.x * -1) : Mathf.CeilToInt(360 - rot.x);
             var msg = new Message<TelemetryPayload>()
             {
                 c = "telemetry",

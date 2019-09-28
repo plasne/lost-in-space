@@ -11,6 +11,8 @@ public class Interface : MonoBehaviour
     private GameObject Helm { get; set; }
     private Camera TacticalCamera { get; set; }
     private GameObject Tactical { get; set; }
+    private Camera SensorsCamera { get; set; }
+    private GameObject Sensors { get; set; }
 
     void Start()
     {
@@ -34,6 +36,13 @@ public class Interface : MonoBehaviour
                     TacticalCamera = camera;
                     TacticalCamera.gameObject.SetActive(true);
                     TacticalCamera.enabled = false;
+                    break;
+                case "SensorsCamera":
+                    SensorsCamera = camera;
+                    SensorsCamera.gameObject.SetActive(true);
+                    SensorsCamera.enabled = false;
+                    Sensors = camera.transform.parent.gameObject;
+                    Sensors.SetActive(false);
                     break;
             }
         }
@@ -67,35 +76,44 @@ public class Interface : MonoBehaviour
 
     public void SwitchTo(string station)
     {
+
+        // disable all camera
+        LobbyCamera.enabled = false;
+        HelmCamera.enabled = false;
+        TacticalCamera.enabled = false;
+        SensorsCamera.enabled = false;
+
+        // inactivate all interfaces
+        Lobby.SetActive(false);
+        Helm.SetActive(false);
+        Tactical.SetActive(false);
+        Sensors.SetActive(false);
+
+        // activate the appropriate station
         switch (station)
         {
             case "lobby":
                 LobbyCamera.enabled = true;
-                HelmCamera.enabled = TacticalCamera.enabled = false;
                 Lobby.SetActive(true);
-                Helm.SetActive(false);
-                Tactical.SetActive(false);
                 break;
             case "helm":
                 HelmCamera.enabled = true;
-                LobbyCamera.enabled = TacticalCamera.enabled = false;
-                Lobby.SetActive(false);
                 Helm.SetActive(true);
-                Tactical.SetActive(false);
                 break;
             case "tactical":
                 TacticalCamera.enabled = true;
-                HelmCamera.enabled = LobbyCamera.enabled = false;
-                Lobby.SetActive(false);
-                Helm.SetActive(false);
                 Tactical.SetActive(true);
                 break;
+            case "sensors":
+                SensorsCamera.enabled = true;
+                Sensors.SetActive(true);
+                break;
         }
+
     }
 
     public void GoToLobby()
     {
-        Debug.Log("here");
         SwitchTo("lobby");
     }
 
@@ -107,6 +125,11 @@ public class Interface : MonoBehaviour
     public void GoToTactical()
     {
         SwitchTo("tactical");
+    }
+
+    public void GoToSensors()
+    {
+        SwitchTo("sensors");
     }
 
 }

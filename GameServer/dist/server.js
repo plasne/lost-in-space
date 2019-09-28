@@ -12,6 +12,7 @@ require('dotenv').config();
 var winston = __importStar(require("winston"));
 var tcp_comm_1 = require("tcp-comm");
 var Ship_1 = require("./Ship");
+var Zone_1 = require("./Zone");
 // globals
 var LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 // start logging
@@ -86,6 +87,11 @@ server
     var module = qualified[0];
     var action = qualified[1];
     ship[module].click(action);
+})
+    .on('cmd:zone?', function () {
+    var zone = new Zone_1.Zone();
+    zone.generate();
+    server.broadcast('zone', zone);
 });
 // log settings
 global.logger.info("PORT is \"" + server.port + "\".");

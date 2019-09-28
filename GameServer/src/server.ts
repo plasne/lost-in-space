@@ -4,6 +4,7 @@ import * as winston from 'winston';
 import { IClient, IMessage, TcpServer } from 'tcp-comm';
 import { Ship } from './Ship';
 import { FromHelmInterface } from './Helm';
+import { Zone } from './Zone';
 
 // globals
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
@@ -89,6 +90,11 @@ server
         var module = qualified[0];
         var action = qualified[1];
         ship[module].click(action);
+    })
+    .on('cmd:zone?', () => {
+        var zone = new Zone();
+        zone.generate();
+        server.broadcast('zone', zone);
     });
 
 // log settings

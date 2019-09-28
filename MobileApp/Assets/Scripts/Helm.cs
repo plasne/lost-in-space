@@ -47,17 +47,6 @@ public class Helm : MonoBehaviour
         public int maxReserve;
     }
 
-    [Serializable]
-    public class TelemetryPayload
-    {
-        public int posx;
-        public int posy;
-        public int posz;
-        public int rotx;
-        public int roty;
-        public int rotz;
-    }
-
     private Network Network { get; set; }
     private FlightPad FlightPad { get; set; }
     private Slider Throttle { get; set; }
@@ -122,11 +111,17 @@ public class Helm : MonoBehaviour
 
     public void ReceiveTelemetry(TelemetryPayload payload)
     {
-        PosX.SetToNumber(payload.posx);
-        PosY.SetToNumber(payload.posy);
-        PosZ.SetToNumber(payload.posz);
-        RotX.SetToNumber(payload.rotx);
-        RotY.SetToNumber(payload.roty);
+
+        // set position
+        PosX.SetToNumber(Mathf.RoundToInt((float)payload.posx / 1000.0f));
+        PosY.SetToNumber(Mathf.RoundToInt((float)payload.posy / 1000.0f));
+        PosZ.SetToNumber(Mathf.RoundToInt((float)payload.posz / 1000.0f));
+
+        // x is the y-dim and y is heading
+        RotX.SetToNumber(payload.roty);
+        var heading = (payload.rotx < 100) ? Mathf.CeilToInt(payload.rotx * -1) : Mathf.CeilToInt(360 - payload.rotx);
+        RotY.SetToNumber(heading);
+
     }
 
     private void SendToHelmStation()

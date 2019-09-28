@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using static Planet;
 
 public class Network : MonoBehaviour
 {
@@ -45,19 +46,29 @@ public class Network : MonoBehaviour
         public int rotx;
         public int roty;
         public int rotz;
-
-        public bool IsDifferent(TelemetryPayload payload)
-        {
-            if (posx != payload.posx) return true;
-            if (posy != payload.posy) return true;
-            if (posz != payload.posz) return true;
-            if (rotx != payload.rotx) return true;
-            if (roty != payload.roty) return true;
-            if (rotz != payload.rotz) return true;
-            return false;
-        }
     }
 
+    [Serializable]
+    public class Feature
+    {
+        public string type;
+    }
+
+    // NOTE: this is a stupid workaround because the JsonUtility doesn't work with generic in nested cases
+
+    [Serializable]
+    public class ZoneOfFeatures
+    {
+        public List<Feature> features;
+    }
+
+    [Serializable]
+    public class ZoneOfPlanets
+    {
+        public List<PlanetPayload> features;
+    }
+
+    private Game Game { get; set; }
     private Player Player { get; set; }
     private ConnectionLamp ConnectionLamp { get; set; }
 
@@ -104,6 +115,22 @@ public class Network : MonoBehaviour
             var actual = JsonUtility.FromJson<Message<HelmPayload>>(json);
             Player.ApplyHelm(actual.p);
         }
+        if (generic.c == "zone")
+        {
+            var actual = JsonUtility.FromJson<Message<ZoneOfFeatures>>(json);
+            for (int i = 0; i < actual.p.features.Count; i++)
+            {
+                var feature = actual.p.features[i];
+                switch (feature.type)
+                {
+                    case "planet":
+                        var pactual = JsonUtility.FromJson<Message<ZoneOfPlanets>>(json);
+                        Planet.Instantiate(pactual.p.features[i]);
+                        break;
+                }
+            }
+            Game.IsRequestingZone = false;
+        }
 
         // take note of the last received message
         LastReceivedAt = Time.realtimeSinceStartup;
@@ -140,7 +167,6 @@ public class Network : MonoBehaviour
 
                 // process the data
                 string data = System.Text.Encoding.ASCII.GetString(buffer, 0, len);
-                Debug.Log(data);
                 ReceiveData(data);
 
             }
@@ -163,7 +189,8 @@ public class Network : MonoBehaviour
     {
 
         // references
-        Player = GameObject.Find("player").GetComponent<Player>();
+        Game = GameObject.Find("Game").GetComponent<Game>();
+        Player = GameObject.Find("Player").GetComponent<Player>();
         ConnectionLamp = GameObject.Find("ConnectionLamp").GetComponent<ConnectionLamp>();
 
     }
