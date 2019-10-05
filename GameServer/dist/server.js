@@ -12,7 +12,8 @@ require('dotenv').config();
 var winston = __importStar(require("winston"));
 var tcp_comm_1 = require("tcp-comm");
 var Ship_1 = require("./Ship");
-var Zone_1 = require("./Zone");
+var Map_1 = require("./Map");
+var Naming_1 = require("./Naming");
 // globals
 var LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 // start logging
@@ -47,8 +48,10 @@ console.log("LOG_LEVEL is \"" + LOG_LEVEL + "\".");
 var server = new tcp_comm_1.TcpServer({
     port: 5000
 });
-// startup the ship
+// startup
+global.naming = new Naming_1.Naming();
 var ship = new Ship_1.Ship(server);
+var map = new Map_1.Map();
 // handle network events
 server
     .on('listen', function () {
@@ -70,9 +73,13 @@ server
     global.logger.error("there was an error raised in module \"" + module + "\"...");
     global.logger.error(error.stack ? error.stack : error.message);
 })
-    .on('cmd:helm', function (client, payload) {
-    global.logger.info("from: " + client.id + " - " + payload.yaw + " x " + payload.pitch + " @ " + payload.throttle);
-    ship.helm.fromInterface(payload);
+    .on('cmd:start', function () {
+    map.generate();
+})
+    .on('cmd:zone?', function (client) {
+    if (map.zone) {
+        server.tell(client, 'zone', map.zone);
+    }
 })
     .on('cmd:telemetry', function (_, payload) {
     var clients = server.clients.filter(function (c) { return c.id != 'mainViewScreen'; });
@@ -88,10 +95,9 @@ server
     var action = qualified[1];
     ship[module].click(action);
 })
-    .on('cmd:zone?', function () {
-    var zone = new Zone_1.Zone();
-    zone.generate();
-    server.broadcast('zone', zone);
+    .on('cmd:helm', function (client, payload) {
+    global.logger.info("from: " + client.id + " - " + payload.yaw + " x " + payload.pitch + " @ " + payload.throttle);
+    ship.helm.fromInterface(payload);
 });
 // log settings
 global.logger.info("PORT is \"" + server.port + "\".");

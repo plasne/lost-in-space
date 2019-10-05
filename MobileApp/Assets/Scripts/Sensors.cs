@@ -13,7 +13,7 @@ public class Sensors : MonoBehaviour
     private const float MinZoom = 1000.0f;
     private const float MaxZoom = 30000.0f;
 
-    private Helm Helm { get; set; }
+    private Network Network { get; set; }
     private Camera Camera { get; set; }
     private GameObject Player { get; set; }
     private GameObject Features { get; set; }
@@ -21,7 +21,9 @@ public class Sensors : MonoBehaviour
     [Serializable]
     public class Feature
     {
+        public string id;
         public string type;
+        public bool add;
     }
 
     // NOTE: this is a stupid workaround because the JsonUtility doesn't work with generic in nested cases
@@ -40,7 +42,7 @@ public class Sensors : MonoBehaviour
 
     void Start()
     {
-        Helm = Resources.FindObjectsOfTypeAll<Helm>().First();
+        Network = GameObject.Find("Interface").GetComponent<Network>();
         Camera = gameObject.GetComponentInChildren<Camera>();
         Player = transform.GetChild(0).gameObject;
         Features = transform.GetChild(1).gameObject;
@@ -51,7 +53,21 @@ public class Sensors : MonoBehaviour
         Zoom();
     }
 
-    void Zoom()
+    public void Activate()
+    {
+        // this is fired when the interface is changed to this component
+
+        // ask for zone info
+        var msg = new Message()
+        {
+            c = "zone?",
+            e = 0
+        };
+        Network.Send(msg);
+
+    }
+
+    private void Zoom()
     {
         if (Input.touchCount == 2)
         {
@@ -87,26 +103,33 @@ public class Sensors : MonoBehaviour
     public void ReceiveZone(string json)
     {
         var actual = JsonUtility.FromJson<Message<ZoneOfFeatures>>(json);
+
+        // see if there is anything that needs to be destroyed
+        for (int i = 0; i < Features.transform.childCount; i++)
+        {
+            var obj = Features.transform.GetChild(i);
+            var found = actual.p.features.Find(f => f.id == obj.name);
+            if (found == null) GameObject.Destroy(obj);
+        }
+
+        // add if it does not exist
         for (int i = 0; i < actual.p.features.Count; i++)
         {
             var feature = actual.p.features[i];
-            switch (feature.type)
+            var obj = GameObject.Find(feature.id);
+            if (obj == null)
             {
-                case "planet":
-                    try
-                    {
+                switch (feature.type)
+                {
+                    case "planet":
                         var pactual = JsonUtility.FromJson<Message<ZoneOfPlanets>>(json);
                         var planet = Planet.Instantiate(pactual.p.features[i]);
                         planet.transform.SetParent(Features.transform);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Log(ex.Message);
-                        Debug.Log(ex.StackTrace);
-                    }
-                    break;
+                        break;
+                }
             }
         }
+
     }
 
 }

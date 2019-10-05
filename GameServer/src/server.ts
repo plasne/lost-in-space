@@ -4,7 +4,8 @@ import * as winston from 'winston';
 import { IClient, IMessage, TcpServer } from 'tcp-comm';
 import { Ship } from './Ship';
 import { FromHelmInterface } from './Helm';
-import { Zone } from './Zone';
+import { Map } from './Map';
+import { Naming } from './Naming';
 
 // globals
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
@@ -46,8 +47,10 @@ const server = new TcpServer({
     port: 5000
 });
 
-// startup the ship
+// startup
+global.naming = new Naming();
 const ship = new Ship(server);
+const map = new Map();
 
 // handle network events
 server
@@ -72,11 +75,13 @@ server
         );
         global.logger.error(error.stack ? error.stack : error.message);
     })
-    .on('cmd:helm', (client: IClient, payload: FromHelmInterface) => {
-        global.logger.info(
-            `from: ${client.id} - ${payload.yaw} x ${payload.pitch} @ ${payload.throttle}`
-        );
-        ship.helm.fromInterface(payload);
+    .on('cmd:start', () => {
+        map.generate();
+    })
+    .on('cmd:zone?', (client: IClient) => {
+        if (map.zone) {
+            server.tell(client, 'zone', map.zone);
+        }
     })
     .on('cmd:telemetry', (_: IClient, payload: any) => {
         var clients = server.clients.filter(c => c.id != 'mainViewScreen');
@@ -91,10 +96,11 @@ server
         var action = qualified[1];
         ship[module].click(action);
     })
-    .on('cmd:zone?', () => {
-        var zone = new Zone();
-        zone.generate();
-        server.broadcast('zone', zone);
+    .on('cmd:helm', (client: IClient, payload: FromHelmInterface) => {
+        global.logger.info(
+            `from: ${client.id} - ${payload.yaw} x ${payload.pitch} @ ${payload.throttle}`
+        );
+        ship.helm.fromInterface(payload);
     });
 
 // log settings

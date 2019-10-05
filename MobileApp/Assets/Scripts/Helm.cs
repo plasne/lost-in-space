@@ -113,12 +113,12 @@ public class Helm : MonoBehaviour
     {
 
         // set position
-        PosX.SetToNumber(Mathf.RoundToInt((float)payload.posx / 1000.0f));
-        PosY.SetToNumber(Mathf.RoundToInt((float)payload.posy / 1000.0f));
-        PosZ.SetToNumber(Mathf.RoundToInt((float)payload.posz / 1000.0f));
+        PosX.SetToNumber(Mathf.RoundToInt(payload.posx / 1000.0f));
+        PosY.SetToNumber(Mathf.RoundToInt(payload.posy / 1000.0f));
+        PosZ.SetToNumber(Mathf.RoundToInt(payload.posz / 1000.0f));
 
         // x is the y-dim and y is heading
-        RotX.SetToNumber(payload.roty);
+        RotX.SetToNumber(Mathf.RoundToInt(payload.roty));
         var heading = (payload.rotx < 100) ? Mathf.CeilToInt(payload.rotx * -1) : Mathf.CeilToInt(360 - payload.rotx);
         RotY.SetToNumber(heading);
 
@@ -198,6 +198,11 @@ public class Helm : MonoBehaviour
     public void DoAction3()
     {
         ClickButton("helm.action3");
+    }
+
+    public void Activate()
+    {
+        // this is fired when the interface is changed to this component
     }
 
 }

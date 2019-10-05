@@ -9,6 +9,7 @@ public class Planet : MonoBehaviour
     [Serializable]
     public class PlanetPayload
     {
+        public string id;
         public int size;
         public int material;
         public int x;
@@ -43,6 +44,7 @@ public class Planet : MonoBehaviour
     {
         var prefab = Resources.Load("Prefabs/Planet");
         GameObject obj = (GameObject)GameObject.Instantiate(prefab);
+        obj.name = payload.id;
         var planet = obj.GetComponent<Planet>();
         planet.Define(payload);
         return planet;

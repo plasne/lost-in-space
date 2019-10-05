@@ -36,12 +36,12 @@ public class Network : MonoBehaviour
     [Serializable]
     public class TelemetryPayload
     {
-        public int posx;
-        public int posy;
-        public int posz;
-        public int rotx;
-        public int roty;
-        public int rotz;
+        public float posx;
+        public float posy;
+        public float posz;
+        public float rotx;
+        public float roty;
+        public float rotz;
     }
 
     private string Id { get; set; }

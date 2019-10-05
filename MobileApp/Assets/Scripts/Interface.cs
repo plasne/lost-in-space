@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Network;
 
 public class Interface : MonoBehaviour
 {
 
+    private Network Network { get; set; }
     private Camera LobbyCamera { get; set; }
     private GameObject Lobby { get; set; }
     private Camera HelmCamera { get; set; }
@@ -16,6 +18,9 @@ public class Interface : MonoBehaviour
 
     void Start()
     {
+
+        // references
+        Network = GameObject.Find("Interface").GetComponent<Network>();
 
         // make all camera objects active and all cameras but Lobby covered
         foreach (var camera in Resources.FindObjectsOfTypeAll<Camera>())
@@ -41,7 +46,7 @@ public class Interface : MonoBehaviour
                     SensorsCamera = camera;
                     SensorsCamera.gameObject.SetActive(true);
                     SensorsCamera.enabled = false;
-                    Sensors = camera.transform.parent.gameObject;
+                    Sensors = camera.GetComponentInParent<Sensors>().gameObject;
                     Sensors.SetActive(false);
                     break;
             }
@@ -95,21 +100,35 @@ public class Interface : MonoBehaviour
             case "lobby":
                 LobbyCamera.enabled = true;
                 Lobby.SetActive(true);
+                Lobby.GetComponent<Lobby>().Activate();
                 break;
             case "helm":
                 HelmCamera.enabled = true;
                 Helm.SetActive(true);
+                Helm.GetComponent<Helm>().Activate();
                 break;
             case "tactical":
                 TacticalCamera.enabled = true;
                 Tactical.SetActive(true);
+                //Tactical.GetComponent<Tactical>().Activate();
                 break;
             case "sensors":
                 SensorsCamera.enabled = true;
                 Sensors.SetActive(true);
+                Sensors.GetComponent<Sensors>().Activate();
                 break;
         }
 
+    }
+
+    public void StartGame()
+    {
+        var msg = new Message()
+        {
+            c = "start",
+            e = 0
+        };
+        Network.Send(msg);
     }
 
     public void GoToLobby()

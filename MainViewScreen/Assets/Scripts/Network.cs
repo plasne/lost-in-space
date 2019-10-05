@@ -40,32 +40,12 @@ public class Network : MonoBehaviour
     [Serializable]
     public class TelemetryPayload
     {
-        public int posx;
-        public int posy;
-        public int posz;
-        public int rotx;
-        public int roty;
-        public int rotz;
-    }
-
-    [Serializable]
-    public class Feature
-    {
-        public string type;
-    }
-
-    // NOTE: this is a stupid workaround because the JsonUtility doesn't work with generic in nested cases
-
-    [Serializable]
-    public class ZoneOfFeatures
-    {
-        public List<Feature> features;
-    }
-
-    [Serializable]
-    public class ZoneOfPlanets
-    {
-        public List<PlanetPayload> features;
+        public float posx;
+        public float posy;
+        public float posz;
+        public float rotx;
+        public float roty;
+        public float rotz;
     }
 
     private Game Game { get; set; }
@@ -117,19 +97,7 @@ public class Network : MonoBehaviour
         }
         if (generic.c == "zone")
         {
-            var actual = JsonUtility.FromJson<Message<ZoneOfFeatures>>(json);
-            for (int i = 0; i < actual.p.features.Count; i++)
-            {
-                var feature = actual.p.features[i];
-                switch (feature.type)
-                {
-                    case "planet":
-                        var pactual = JsonUtility.FromJson<Message<ZoneOfPlanets>>(json);
-                        Planet.Instantiate(pactual.p.features[i]);
-                        break;
-                }
-            }
-            Game.IsRequestingZone = false;
+            Game.ReceiveZone(json);
         }
 
         // take note of the last received message

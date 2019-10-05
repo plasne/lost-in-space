@@ -1,0 +1,155 @@
+fileFormatVersion: 2
+guid: 971e11c5bf81b41789ac096843180d23
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: grey-cruiser:Layer1
+    100004: grey-cruiser:Layer2
+    100006: grey-cruiser:Layer3
+    100008: grey-cruiser:Layer4
+    100010: grey-cruiser:Layer5
+    100012: grey-cruiser:Layer6
+    400000: //RootNode
+    400002: grey-cruiser:Layer1
+    400004: grey-cruiser:Layer2
+    400006: grey-cruiser:Layer3
+    400008: grey-cruiser:Layer4
+    400010: grey-cruiser:Layer5
+    400012: grey-cruiser:Layer6
+    2300000: grey-cruiser:Layer1
+    2300002: grey-cruiser:Layer2
+    2300004: grey-cruiser:Layer3
+    2300006: grey-cruiser:Layer4
+    2300008: grey-cruiser:Layer5
+    2300010: grey-cruiser:Layer6
+    3300000: grey-cruiser:Layer1
+    3300002: grey-cruiser:Layer2
+    3300004: grey-cruiser:Layer3
+    3300006: grey-cruiser:Layer4
+    3300008: grey-cruiser:Layer5
+    3300010: grey-cruiser:Layer6
+    4300000: grey-cruiser:Layer1
+    4300002: grey-cruiser:Layer2
+    4300004: grey-cruiser:Layer3
+    4300006: grey-cruiser:Layer4
+    4300008: grey-cruiser:Layer5
+    4300010: grey-cruiser:Layer6
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-city
+    second: {fileID: 2100000, guid: 502b971b237c04c0ab99dac02048b0ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-dish
+    second: {fileID: 2100000, guid: 502b971b237c04c0ab99dac02048b0ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-extruded
+    second: {fileID: 2100000, guid: a9c0f51664d4244eda4b45287a60efd0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-features
+    second: {fileID: 2100000, guid: 0365efee6202d494280d14f86e404069, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-port
+    second: {fileID: 2100000, guid: d312de230f23f456fa6b8b44b2214095, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-radar
+    second: {fileID: 2100000, guid: 3dbcee505d4e847108fa3925497f122f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey-cruiser-shields
+    second: {fileID: 2100000, guid: d0707df47ac4e45368572713664f2a7f, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

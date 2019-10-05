@@ -15,6 +15,10 @@ public class Lobby : MonoBehaviour
 
     }
 
+    public void Activate()
+    {
+        // this is fired when the interface is changed to this component
+    }
 
 
 }

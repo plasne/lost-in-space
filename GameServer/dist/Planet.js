@@ -19,9 +19,7 @@ var Planet = /** @class */ (function (_super) {
     function Planet() {
         var _this = _super.call(this) || this;
         _this.type = 'planet';
-        _this.x = 0;
-        _this.y = 0;
-        _this.z = 0;
+        _this.name = global.naming.greek;
         _this.size = _this.random(2000, 6000);
         _this.material = _this.random(0, 6);
         return _this;
