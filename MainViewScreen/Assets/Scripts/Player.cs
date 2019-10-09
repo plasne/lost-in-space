@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 {
 
     private Network Network { get; set; }
-    private GameObject PlayerObject { get; set; }
     private Rigidbody Rigidbody { get; set; }
 
     private float Elapsed { get; set; }
@@ -21,8 +20,7 @@ public class Player : MonoBehaviour
 
         // get references
         Network = GameObject.Find("Game").GetComponent<Network>();
-        PlayerObject = GameObject.Find("Player");
-        Rigidbody = PlayerObject.GetComponentInChildren<Rigidbody>();
+        Rigidbody = GetComponent<Rigidbody>();
 
     }
 

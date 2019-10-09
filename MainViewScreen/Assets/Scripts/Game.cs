@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
 using static Network;
 using static Planet;
-using static Vessel;
+using static Ship;
 
 public class Game : MonoBehaviour
 {
@@ -40,9 +40,9 @@ public class Game : MonoBehaviour
     }
 
     [Serializable]
-    public class ZoneOfVessels
+    public class ZoneOfShips
     {
-        public List<VesselPayload> features;
+        public List<ShipPayload> features;
     }
 
     void Start()
@@ -50,7 +50,7 @@ public class Game : MonoBehaviour
 
         // get references
         Network = GameObject.Find("Game").GetComponent<Network>();
-        Player = GameObject.Find("Player").GetComponent<Player>();
+        Player = Resources.FindObjectsOfTypeAll<Player>().First();
         Features = GameObject.Find("Features");
 
         // ask for zone info
@@ -87,7 +87,7 @@ public class Game : MonoBehaviour
         var actual = JsonUtility.FromJson<Message<ZoneOfFeatures>>(json);
 
         // see if there is anything that needs to be destroyed
-        for (int i = 0; i < Features.transform.childCount; i++)
+        for (int i = 1; i < Features.transform.childCount; i++) // i=1 skips Player
         {
             var obj = Features.transform.GetChild(i);
             var found = actual.p.features.Find(f => f.id == obj.name);
@@ -109,9 +109,9 @@ public class Game : MonoBehaviour
                         planet.transform.SetParent(Features.transform);
                         break;
                     case "vessel":
-                        var vactual = JsonUtility.FromJson<Message<ZoneOfVessels>>(json);
-                        var vessel = Vessel.Instantiate(vactual.p.features[i]);
-                        vessel.transform.SetParent(Features.transform);
+                        var sactual = JsonUtility.FromJson<Message<ZoneOfShips>>(json);
+                        var ship = Ship.Instantiate(sactual.p.features[i]);
+                        ship.transform.SetParent(Features.transform);
                         break;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -158,7 +159,7 @@ public class Network : MonoBehaviour
 
         // references
         Game = GameObject.Find("Game").GetComponent<Game>();
-        Player = GameObject.Find("Player").GetComponent<Player>();
+        Player = Resources.FindObjectsOfTypeAll<Player>().First();
         ConnectionLamp = GameObject.Find("ConnectionLamp").GetComponent<ConnectionLamp>();
 
     }
