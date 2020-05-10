@@ -35,14 +35,11 @@ public class Helm : MonoBehaviour
         public bool action1IsAvailable;
         public bool action2IsAvailable;
         public bool action3IsAvailable;
+        public int maxShields;
         public int foreShields;
-        public int maxForeShields;
         public int aftShields;
-        public int maxAftShields;
         public int portShields;
-        public int maxPortShields;
         public int starShields;
-        public int maxStarShields;
         public int reserve;
         public int maxReserve;
     }
@@ -75,24 +72,68 @@ public class Helm : MonoBehaviour
 
         // get references
         Network = GameObject.Find("Interface").GetComponent<Network>();
-        FlightPad = GameObject.Find("FlightPad").GetComponent<FlightPad>();
-        Throttle = GameObject.Find("Throttle").GetComponent<Slider>();
-        EnginePower = GameObject.Find("EnginePower").GetComponent<EnergyBar>();
-        JumpPower = GameObject.Find("JumpPower").GetComponent<EnergyBar>();
-        ThrusterPower = GameObject.Find("ThrusterPower").GetComponent<EnergyBar>();
-        Crew = GameObject.Find("Crew").GetComponent<FourDigit>();
-        Jump = GameObject.Find("Jump").GetComponent<LitButton>();
-        Evac = GameObject.Find("Evac").GetComponent<LitButton>();
-        Shields = GameObject.Find("Shields").GetComponent<ShieldDisplay>();
-        ReservePower = GameObject.Find("ReservePower").GetComponent<PowerWheel>();
-        Action1 = GameObject.Find("Action1").GetComponent<Button>();
-        Action2 = GameObject.Find("Action2").GetComponent<Button>();
-        Action3 = GameObject.Find("Action3").GetComponent<Button>();
-        PosX = GameObject.Find("POS-X").GetComponent<FourDigit>();
-        PosY = GameObject.Find("POS-Y").GetComponent<FourDigit>();
-        PosZ = GameObject.Find("POS-Z").GetComponent<FourDigit>();
-        RotX = GameObject.Find("ROT-X").GetComponent<FourDigit>();
-        RotY = GameObject.Find("ROT-Y").GetComponent<FourDigit>();
+        var helm = GameObject.Find("Helm");
+        for (int i = 0; i < helm.transform.childCount; i++)
+        {
+            var obj = helm.transform.GetChild(i).gameObject;
+            switch (obj.name)
+            {
+                case "FlightPad":
+                    FlightPad = obj.GetComponent<FlightPad>();
+                    break;
+                case "Throttle":
+                    Throttle = obj.GetComponent<Slider>();
+                    break;
+                case "EnginePower":
+                    EnginePower = obj.GetComponent<EnergyBar>();
+                    break;
+                case "JumpPower":
+                    JumpPower = obj.GetComponent<EnergyBar>();
+                    break;
+                case "ThrusterPower":
+                    ThrusterPower = obj.GetComponent<EnergyBar>();
+                    break;
+                case "Crew":
+                    Crew = obj.GetComponent<FourDigit>();
+                    break;
+                case "Jump":
+                    Jump = obj.GetComponent<LitButton>();
+                    break;
+                case "Evac":
+                    Evac = obj.GetComponent<LitButton>();
+                    break;
+                case "Shields":
+                    Shields = obj.GetComponent<ShieldDisplay>();
+                    break;
+                case "ReservePower":
+                    ReservePower = obj.GetComponent<PowerWheel>();
+                    break;
+                case "Action1":
+                    Action1 = obj.GetComponent<Button>();
+                    break;
+                case "Action2":
+                    Action2 = obj.GetComponent<Button>();
+                    break;
+                case "Action3":
+                    Action3 = obj.GetComponent<Button>();
+                    break;
+                case "POS-X":
+                    PosX = obj.GetComponent<FourDigit>();
+                    break;
+                case "POS-Y":
+                    PosY = obj.GetComponent<FourDigit>();
+                    break;
+                case "POS-Z":
+                    PosZ = obj.GetComponent<FourDigit>();
+                    break;
+                case "ROT-X":
+                    RotX = obj.GetComponent<FourDigit>();
+                    break;
+                case "ROT-Y":
+                    RotY = obj.GetComponent<FourDigit>();
+                    break;
+            }
+        }
 
     }
 
@@ -166,10 +207,11 @@ public class Helm : MonoBehaviour
         Action2.interactable = payload.action2IsAvailable;
         Action3.interactable = payload.action3IsAvailable;
         Shields.SetShields(
-            payload.foreShields, payload.maxForeShields,
-            payload.aftShields, payload.maxAftShields,
-            payload.portShields, payload.maxPortShields,
-            payload.starShields, payload.maxStarShields
+            payload.maxShields,
+            payload.foreShields,
+            payload.aftShields,
+            payload.portShields,
+            payload.starShields
         );
         ReservePower.SetPowerLevel(payload.reserve, payload.maxReserve);
     }

@@ -1,6 +1,6 @@
-import { Tag } from './Tag';
+import { Tags } from './Tags';
 export declare class Effect {
     title: string;
-    tags: Tag[];
+    tags: Tags;
     constructor(title: string);
 }

@@ -1,4 +1,3 @@
-import { Ship } from './Ship';
 import { PoweredSystem } from './PoweredSystem';
 
 export class Engine extends PoweredSystem {
@@ -6,43 +5,33 @@ export class Engine extends PoweredSystem {
         return 'engine';
     }
 
-    // thrust is the speed at which the ship moves but is tempered by throttle
-    get thrust(): number {
-        return this.ship.effects.sum(`${this.prefix}.thrust`);
-    }
-
-    // booster is the speed at which the ships moves regardless of throttle
-    get booster(): number {
-        return this.ship.effects.sum(`${this.prefix}.booster`);
-    }
-
     // efficiency rating = the amount of thrust produced per each power
-    get efficiency(): number {
-        return this.ship.effects.sum(`${this.prefix}.efficiency`);
+    get thrustEfficiency(): number {
+        return global.ship.effects.sum(`${this.prefix}.thrust-efficiency`);
     }
 
-    // returns the total speed based on the throttle
-    public speed(throttle: number) {
-        return throttle * this.thrust + this.booster;
+    // efficiency rating = the amount of emit produced for each power
+    get emitEfficiency(): number {
+        return global.ship.effects.sum(`${this.prefix}.emit-efficiency`);
     }
 
     public tick() {
         super.tick();
 
         // consume power, produce thrust and emit
-        if (this.ship.reactor.reserve >= this.power) {
-            this.ship.reactor.reserve -= this.power;
-            var produceThrust = this.power * this.efficiency;
-            var produceEmit = this.power * 2;
-            this.ship.effects.add(
+        if (global.ship.reactor.reserve >= this.power) {
+            global.ship.reactor.reserve -= this.power;
+            var produceThrust = this.power * this.thrustEfficiency;
+            global.ship.effects.add(
                 'Engine Thrust',
-                `${this.prefix}.thrust`,
+                `thrust`,
                 produceThrust,
                 1
             );
-            this.ship.effects.add('Engine Emission', 'emit', produceEmit, 1);
+            var produceEmit = this.power * this.emitEfficiency;
+            global.ship.effects.add('Engine Emission', 'emit', produceEmit, 1);
             global.logger.debug(
-                `consumed ${this.power} power to produce ${produceThrust} thrust and ${produceEmit} emit, leaving ${this.ship.reactor.reserve} power in the reactor.`
+                `consumed ${this.power} power to produce ${produceThrust} thrust and ${produceEmit} emit, leaving ${global.ship.reactor.reserve} power in the reactor.`
             );
         } else {
             // hard shutdown the engines
@@ -54,15 +43,20 @@ export class Engine extends PoweredSystem {
         }
     }
 
-    constructor(ship: Ship) {
-        super(ship);
+    constructor() {
+        super();
         this.power = 2;
 
         // establish starting effects
-        ship.effects.add(
-            'Engine Efficiency',
-            `${this.prefix}.efficiency`,
+        global.ship.effects.add(
+            'Engine Thrust Efficiency',
+            `${this.prefix}.engine-efficiency`,
             500.0
+        );
+        global.ship.effects.add(
+            'Engine Emission Efficiency',
+            `${this.prefix}.emit-efficiency`,
+            2.0
         );
     }
 }

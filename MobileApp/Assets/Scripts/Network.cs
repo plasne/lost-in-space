@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using UnityEngine;
 using static Helm;
+using static Tactical;
 
 public class Network : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class Network : MonoBehaviour
     [Serializable]
     public class TelemetryPayload
     {
+        public string id;
         public float posx;
         public float posy;
         public float posz;
@@ -55,6 +57,7 @@ public class Network : MonoBehaviour
 
     private Lamp ConnectionLamp { get; set; }
     private Helm Helm { get; set; }
+    private Tactical Tactical { get; set; }
     private Sensors Sensors { get; set; }
 
     public void Send(Message msg)
@@ -90,13 +93,21 @@ public class Network : MonoBehaviour
         if (generic.c == "telemetry")
         {
             var actual = JsonUtility.FromJson<Message<TelemetryPayload>>(json);
-            if (Helm.isActiveAndEnabled) Helm.ReceiveTelemetry(actual.p);
+            if (actual.p.id == "00000000-0000-0000-0000-000000000000")
+            {
+                if (Helm.isActiveAndEnabled) Helm.ReceiveTelemetry(actual.p);
+            }
             if (Sensors.isActiveAndEnabled) Sensors.ReceiveTelemetry(actual.p);
         }
         if (generic.c == "helm" && Helm.isActiveAndEnabled)
         {
             var actual = JsonUtility.FromJson<Message<FromHelmStation>>(json);
             Helm.ReceiveFromHelmStation(actual.p);
+        }
+        if (generic.c == "tactical" && Tactical.isActiveAndEnabled)
+        {
+            var actual = JsonUtility.FromJson<Message<FromTacticalStation>>(json);
+            Tactical.ReceiveFromTacticalStation(actual.p);
         }
         if (generic.c == "zone")
         {
@@ -164,6 +175,7 @@ public class Network : MonoBehaviour
         // references
         ConnectionLamp = GameObject.Find("ConnectionLamp").GetComponent<Lamp>();
         Helm = Resources.FindObjectsOfTypeAll<Helm>().First();
+        Tactical = Resources.FindObjectsOfTypeAll<Tactical>().First();
         Sensors = Resources.FindObjectsOfTypeAll<Sensors>().First();
 
         // generate an id for this mobile app
@@ -181,7 +193,8 @@ public class Network : MonoBehaviour
             Elapsed = 0.0f;
             ConnectionLamp.SetLampColor("yellow");
             TcpClient = new TcpClient();
-            TcpClientConnectTask = TcpClient.ConnectAsync("gameserver", 5000);
+            TcpClientConnectTask = TcpClient.ConnectAsync("192.168.12.178", 5000);
+            //TcpClientConnectTask = TcpClient.ConnectAsync("gameserver", 5000);
         }
 
         // announce connection failure

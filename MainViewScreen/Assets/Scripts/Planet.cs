@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : MonoBehaviour
+public class Planet : GameObj
 {
 
     [Serializable]
@@ -20,6 +20,8 @@ public class Planet : MonoBehaviour
 
     public List<Material> Materials = new List<Material>();
 
+    public override string ExplosionPrefab => throw new NotImplementedException();
+
     void Start()
     {
     }
@@ -35,6 +37,7 @@ public class Planet : MonoBehaviour
 
     public void Define(PlanetPayload payload)
     {
+        Id = Guid.Parse(payload.id);
         transform.localScale = new Vector3(payload.size, payload.size, payload.size);
         var renderer = this.GetComponent<MeshRenderer>();
         renderer.material = Materials[payload.material];

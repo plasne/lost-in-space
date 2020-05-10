@@ -1,4 +1,3 @@
-import { Ship } from './Ship';
 import { PoweredSystem } from './PoweredSystem';
 
 export class Thrusters extends PoweredSystem {
@@ -7,6 +6,7 @@ export class Thrusters extends PoweredSystem {
     }
 
     // agility is how maneuverable the ship is
+    /*
     get agility(): number {
         return this.ship.effects.sum(`${this.prefix}.agility`);
     }
@@ -15,39 +15,40 @@ export class Thrusters extends PoweredSystem {
     get evade(): number {
         return this.ship.effects.sum(`${this.prefix}.evade`);
     }
+    */
 
     // efficiency rating = the amount of agility produced per power
     get agilityEfficiency(): number {
-        return this.ship.effects.sum(`${this.prefix}.agility-efficiency`);
+        return global.ship.effects.sum(`${this.prefix}.agility-efficiency`);
     }
 
     // efficiency rating = the amount of evade produced per power
     get evadeEfficiency(): number {
-        return this.ship.effects.sum(`${this.prefix}.evade-efficiency`);
+        return global.ship.effects.sum(`${this.prefix}.evade-efficiency`);
     }
 
     public tick() {
         super.tick();
 
         // consume power, produce agility and evade
-        if (this.ship.reactor.reserve >= this.power) {
-            this.ship.reactor.reserve -= this.power;
+        if (global.ship.reactor.reserve >= this.power) {
+            global.ship.reactor.reserve -= this.power;
             var produceAgility = this.power * this.agilityEfficiency;
             var produceEvade = this.power * this.evadeEfficiency;
-            this.ship.effects.add(
+            global.ship.effects.add(
                 'Thruster Agility',
                 `${this.prefix}.agility`,
                 produceAgility,
                 1
             );
-            this.ship.effects.add(
+            global.ship.effects.add(
                 'Thruster Evade',
                 `${this.prefix}.evade`,
                 produceEvade,
                 1
             );
             global.logger.debug(
-                `consumed ${this.power} power to produce ${produceAgility} agility and ${produceEvade} evade, leaving ${this.ship.reactor.reserve} power in the reactor.`
+                `consumed ${this.power} power to produce ${produceAgility} agility and ${produceEvade} evade, leaving ${global.ship.reactor.reserve} power in the reactor.`
             );
         } else {
             // hard shutdown the engines
@@ -59,16 +60,16 @@ export class Thrusters extends PoweredSystem {
         }
     }
 
-    constructor(ship: Ship) {
-        super(ship);
+    constructor() {
+        super();
 
         // establish starting effects
-        ship.effects.add(
+        global.ship.effects.add(
             'Thruster Agility Efficiency',
             `${this.prefix}.agility-efficiency`,
             1000.0
         );
-        ship.effects.add(
+        global.ship.effects.add(
             'Thruster Evade Efficiency',
             `${this.prefix}.evade-efficiency`,
             1.0

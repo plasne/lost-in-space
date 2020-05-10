@@ -19,6 +19,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var es5ClassFix_1 = require("./es5ClassFix");
 var Effect_1 = require("./Effect");
 var Tag_1 = require("./Tag");
 var Effects = /** @class */ (function (_super) {
@@ -26,13 +27,14 @@ var Effects = /** @class */ (function (_super) {
     function Effects() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    // add a simple effect
+    // add a simple numeric effect
     Effects.prototype.add = function (title, key, value, lifetime) {
         if (lifetime === void 0) { lifetime = 0; }
         var effect = new Effect_1.Effect(title);
-        effect.tags.push(new Tag_1.Tag(key, value));
+        var tag = new Tag_1.Tag(key, value.toString());
+        effect.tags.push(tag);
         if (lifetime > 0)
-            effect.tags.push(new Tag_1.Tag('lifetime', lifetime));
+            effect.tags.push(new Tag_1.Tag('lifetime', lifetime.toString()));
         this.push(effect);
         return effect;
     };
@@ -44,7 +46,7 @@ var Effects = /** @class */ (function (_super) {
             for (var _b = 0, _c = effect.tags; _b < _c.length; _b++) {
                 var tag = _c[_b];
                 if (tag.key === key)
-                    total += tag.value;
+                    total += Number(tag.value);
             }
         }
         return total;
@@ -53,48 +55,26 @@ var Effects = /** @class */ (function (_super) {
     Effects.prototype.contains = function (key) {
         for (var _i = 0, _a = this; _i < _a.length; _i++) {
             var effect = _a[_i];
-            for (var _b = 0, _c = effect.tags; _b < _c.length; _b++) {
-                var tag = _c[_b];
-                if (tag.key === key)
-                    return true;
-            }
+            if (effect.tags.contains(key))
+                return true;
         }
         return false;
     };
     // decrement and potentially remove
-    Effects.prototype.decrement = function (key, value, removeIfZero) {
-        if (removeIfZero === void 0) { removeIfZero = false; }
+    Effects.prototype.decrement = function (key, value, removeIfExpired) {
+        if (removeIfExpired === void 0) { removeIfExpired = false; }
         // loop in reverse so we can remove while iterating
         var i = this.length;
         while (i--) {
             var effect = this[i];
-            for (var _i = 0, _a = effect.tags; _i < _a.length; _i++) {
-                var tag = _a[_i];
-                if (tag.key === key) {
-                    tag.value -= value;
-                    if (removeIfZero && tag.value <= 0)
-                        this.splice(i, 1);
-                }
-            }
+            var expired = effect.tags.decrement(key, value);
+            if (expired && removeIfExpired)
+                this.splice(i, 1);
         }
     };
     Effects = __decorate([
-        es5ClassFix()
+        es5ClassFix_1.es5ClassFix()
     ], Effects);
     return Effects;
 }(Array));
 exports.Effects = Effects;
-function es5ClassFix() {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            __extends(class_1, _super);
-            function class_1() {
-                var _this = _super.call(this) || this;
-                Object.setPrototypeOf(_this, target.prototype);
-                return _this;
-            }
-            return class_1;
-        }(target));
-    };
-}
-exports.es5ClassFix = es5ClassFix;

@@ -1,30 +1,44 @@
 import { Effects } from './Effects';
+import { Feature } from './Feature';
 import { Reactor } from './Reactor';
 import { Engine } from './Engine';
 import { JumpEngine } from './JumpEngine';
-import { TcpServer } from 'tcp-comm';
 import { Helm } from './Helm';
 import { Thrusters } from './Thrusters';
 import { BoosterAction } from './Action';
+import { Scanners } from './Scanners';
+import { Sensors } from './Sensors';
+import { Tactical } from './Tactical';
+import { Weapons } from './Weapons';
+import { BattleStations } from './BattleStations';
+import { Shields } from './Shields';
 
 export declare interface Ship {
     on(event: 'message', listener: (payload: any) => void): this;
 }
 
-export class Ship {
-    private _server: TcpServer;
+export class Ship extends Feature {
     private _class: number = 2;
 
+    // effects
     public effects: Effects = new Effects();
+
+    // stations
     public helm: Helm;
+    public tactical: Tactical;
+
+    // powered-systems
     public reactor: Reactor;
     public engine: Engine;
     public jumpEngine: JumpEngine;
     public thrusters: Thrusters;
+    public sensors: Sensors;
+    public scanners: Scanners;
+    public battleStations: BattleStations;
+    public weapons: Weapons;
+    public shields: Shields;
 
-    get server(): TcpServer {
-        return this._server;
-    }
+    public type: string = 'ship';
 
     get class(): number {
         return this._class;
@@ -32,6 +46,22 @@ export class Ship {
 
     get emit(): number {
         return this.effects.sum('emit') + this.class * 10;
+    }
+
+    get detect(): number {
+        return this.effects.sum('detect');
+    }
+
+    get agility(): number {
+        return this.effects.sum('agility');
+    }
+
+    get thrust(): number {
+        return this.effects.sum('thrust');
+    }
+
+    get speed(): number {
+        return this.effects.sum('speed');
     }
 
     public tick() {
@@ -43,23 +73,38 @@ export class Ship {
         this.engine.tick();
         this.jumpEngine.tick();
         this.thrusters.tick();
+        this.sensors.tick();
+        this.scanners.tick();
+        this.battleStations.tick();
+        this.weapons.tick();
+        this.shields.tick();
 
         // send updates after each tick
         this.helm.toInterface();
     }
 
-    constructor(server: TcpServer) {
-        this._server = server;
+    constructor() {
+        super();
+
+        // NOTE: the startup of some systems require the ability to apply effects, which requires
+        //  the ship to be assigned to global.ship
+        global.ship = this;
 
         // instantiate stations
-        this.helm = new Helm(this);
-        this.helm.action1 = new BoosterAction(this);
+        this.helm = new Helm();
+        this.helm.action1 = new BoosterAction();
+        this.tactical = new Tactical();
 
         // instantiate systems
-        this.reactor = new Reactor(this);
-        this.engine = new Engine(this);
-        this.jumpEngine = new JumpEngine(this);
-        this.thrusters = new Thrusters(this);
+        this.reactor = new Reactor();
+        this.engine = new Engine();
+        this.jumpEngine = new JumpEngine();
+        this.thrusters = new Thrusters();
+        this.sensors = new Sensors();
+        this.scanners = new Scanners();
+        this.battleStations = new BattleStations();
+        this.weapons = new Weapons();
+        this.shields = new Shields();
 
         // every 10 seconds: tick()
         setInterval(() => {

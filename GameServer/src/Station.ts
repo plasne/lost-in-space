@@ -1,18 +1,11 @@
-import { Ship } from './Ship';
 import { Action } from './Action';
 
 export abstract class Station {
-    private _ship: Ship;
     private _action1?: Action = undefined;
     private _action2?: Action = undefined;
     private _action3?: Action = undefined;
 
     abstract prefix: string;
-
-    // reference to the ship
-    protected get ship(): Ship {
-        return this._ship;
-    }
 
     public get action1(): Action | undefined {
         return this._action1;
@@ -46,9 +39,5 @@ export abstract class Station {
         if (action === 'action1' && this.action1) this.action1.activate();
         if (action === 'action2' && this.action2) this.action2.activate();
         if (action === 'action3' && this.action3) this.action3.activate();
-    }
-
-    constructor(ship: Ship) {
-        this._ship = ship;
     }
 }

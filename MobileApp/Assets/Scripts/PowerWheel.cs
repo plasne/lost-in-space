@@ -1,9 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerWheel : MonoBehaviour
 {
+
+    [SerializeField] private Text Value;
 
     void Start()
     {
@@ -35,8 +37,10 @@ public class PowerWheel : MonoBehaviour
 
     public void SetPowerLevel(int actual, int max)
     {
-        actual = Mathf.RoundToInt((float)actual / (float)max * 16.0f);
-        SetPowerLevel(actual);
+        actual = Mathf.Clamp(actual, 0, max);
+        Value.text = actual.ToString().PadLeft(4, '0');
+        var relative = Mathf.RoundToInt((float)actual / (float)max * 16.0f);
+        SetPowerLevel(relative);
     }
 
 }

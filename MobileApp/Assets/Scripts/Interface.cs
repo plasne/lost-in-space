@@ -15,6 +15,8 @@ public class Interface : MonoBehaviour
     private GameObject Tactical { get; set; }
     private Camera SensorsCamera { get; set; }
     private GameObject Sensors { get; set; }
+    private Camera ScannersCamera { get; set; }
+    private GameObject Scanners { get; set; }
 
     void Start()
     {
@@ -49,6 +51,11 @@ public class Interface : MonoBehaviour
                     Sensors = camera.GetComponentInParent<Sensors>().gameObject;
                     Sensors.SetActive(false);
                     break;
+                case "ScannersCamera":
+                    ScannersCamera = camera;
+                    ScannersCamera.gameObject.SetActive(true);
+                    ScannersCamera.enabled = false;
+                    break;
             }
         }
 
@@ -69,6 +76,10 @@ public class Interface : MonoBehaviour
                     Tactical = canvas.gameObject;
                     Tactical.SetActive(false);
                     break;
+                case "Scanners":
+                    Scanners = canvas.gameObject;
+                    Scanners.SetActive(false);
+                    break;
             }
         }
 
@@ -87,11 +98,13 @@ public class Interface : MonoBehaviour
         HelmCamera.enabled = false;
         TacticalCamera.enabled = false;
         SensorsCamera.enabled = false;
+        SensorsCamera.enabled = false;
 
         // inactivate all interfaces
         Lobby.SetActive(false);
         Helm.SetActive(false);
         Tactical.SetActive(false);
+        Sensors.SetActive(false);
         Sensors.SetActive(false);
 
         // activate the appropriate station
@@ -110,12 +123,17 @@ public class Interface : MonoBehaviour
             case "tactical":
                 TacticalCamera.enabled = true;
                 Tactical.SetActive(true);
-                //Tactical.GetComponent<Tactical>().Activate();
+                Tactical.GetComponent<Tactical>().Activate();
                 break;
             case "sensors":
                 SensorsCamera.enabled = true;
                 Sensors.SetActive(true);
                 Sensors.GetComponent<Sensors>().Activate();
+                break;
+            case "scanners":
+                ScannersCamera.enabled = true;
+                Scanners.SetActive(true);
+                //Scanners.GetComponent<Scanners>().Activate();
                 break;
         }
 
@@ -149,6 +167,11 @@ public class Interface : MonoBehaviour
     public void GoToSensors()
     {
         SwitchTo("sensors");
+    }
+
+    public void GoToScanners()
+    {
+        SwitchTo("scanners");
     }
 
 }

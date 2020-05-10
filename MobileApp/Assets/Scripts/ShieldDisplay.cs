@@ -45,12 +45,12 @@ public class ShieldDisplay : MonoBehaviour
 
     }
 
-    public void SetShields(int fore, int maxFore, int aft, int maxAft, int port, int maxPort, int star, int maxStar)
+    public void SetShields(int max, int fore, int aft, int port, int star)
     {
-        fore = Mathf.RoundToInt((float)fore / (float)maxFore * 4.0f);
-        aft = Mathf.RoundToInt((float)aft / (float)maxAft * 4.0f);
-        port = Mathf.RoundToInt((float)port / (float)maxPort * 4.0f);
-        star = Mathf.RoundToInt((float)star / (float)maxStar * 4.0f);
+        fore = Mathf.RoundToInt((float)fore / (float)max * 4.0f);
+        aft = Mathf.RoundToInt((float)aft / (float)max * 4.0f);
+        port = Mathf.RoundToInt((float)port / (float)max * 4.0f);
+        star = Mathf.RoundToInt((float)star / (float)max * 4.0f);
         SetShields(fore, aft, port, star);
     }
 

@@ -26,35 +26,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
-        // send telemetry
-        Elapsed += Time.deltaTime;
-        if (Elapsed > 0.2)
-        {
-            Elapsed = 0.0f;
-
-            // send telemetry data
-            var pos = Rigidbody.transform.position;
-            var rot = Rigidbody.transform.rotation.eulerAngles;
-            TelemetryPayload payload = new TelemetryPayload()
-            {
-                posx = Mathf.CeilToInt(pos.x),
-                posy = Mathf.CeilToInt(pos.y),
-                posz = Mathf.CeilToInt(pos.z),
-                rotx = Mathf.CeilToInt(rot.x),
-                roty = Mathf.CeilToInt(rot.y),
-                rotz = Mathf.CeilToInt(rot.z),
-            };
-            var msg = new Message<TelemetryPayload>()
-            {
-                c = "telemetry",
-                p = payload,
-                e = 0
-            };
-            Network.Send(msg);
-
-        }
-
     }
 
     void FixedUpdate()

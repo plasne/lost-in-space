@@ -45,4 +45,12 @@ public class LitButton : MonoBehaviour
         }
     }
 
+    public bool IsLit
+    {
+        get
+        {
+            return (Icon.sprite == Lit);
+        }
+    }
+
 }

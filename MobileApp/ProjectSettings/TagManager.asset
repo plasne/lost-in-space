@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Station
+  - Facing
+  - Contact
+  - MountFore
+  - Frill
+  - TargetSelector
   layers:
   - Default
   - TransparentFX

@@ -7,6 +7,7 @@ using System;
 public abstract class GameObj : MonoBehaviour
 {
 
+    public Guid Id { get; set; }
     public bool IsInvulnerable { get; set; } = false;
     public float HullPoints { get; set; }
     public float Damage { get; set; }

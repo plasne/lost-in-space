@@ -42,7 +42,7 @@ public class Planet : MonoBehaviour
 
     public static Planet Instantiate(PlanetPayload payload)
     {
-        var prefab = Resources.Load("Prefabs/Planet");
+        var prefab = Resources.Load("Models/Planet");
         GameObject obj = (GameObject)GameObject.Instantiate(prefab);
         obj.name = payload.id;
         var planet = obj.GetComponent<Planet>();

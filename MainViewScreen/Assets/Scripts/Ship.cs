@@ -40,6 +40,7 @@ public class Ship : GameObj
 
     public void Define(ShipPayload payload)
     {
+        Id = Guid.Parse(payload.id);
         var renderer = this.GetComponent<MeshRenderer>();
         transform.position = new Vector3(payload.x, payload.y, payload.z);
     }
@@ -52,6 +53,11 @@ public class Ship : GameObj
         var ship = obj.GetComponent<Ship>();
         ship.Define(payload);
         return ship;
+    }
+
+    public (string, string) RelativeFacing(Ship other)
+    {
+        return ("F", "F");
     }
 
 

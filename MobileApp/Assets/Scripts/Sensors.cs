@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Network;
 using static Planet;
+using static Ship;
 
 public class Sensors : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Sensors : MonoBehaviour
     private const float ZoomSpeed = 300.0f;
     private const float MinZoom = 1000.0f;
     private const float MaxZoom = 30000.0f;
+
+    private bool IsActivating = false;
 
     private Network Network { get; set; }
     private Camera Camera { get; set; }
@@ -40,8 +43,17 @@ public class Sensors : MonoBehaviour
         public List<PlanetPayload> features;
     }
 
-    void Start()
+    [Serializable]
+    public class ZoneOfShips
     {
+        public List<ShipPayload> features;
+    }
+
+    void Awake()
+    {
+        // NOTE: Awake used instead of Start because Awake will run even if the script
+        //  doesn't because the object is disabled. This was necessary to support
+        //  telemetry coming to the client.
         Network = GameObject.Find("Interface").GetComponent<Network>();
         Camera = gameObject.GetComponentInChildren<Camera>();
         Player = transform.GetChild(0).gameObject;
@@ -50,21 +62,29 @@ public class Sensors : MonoBehaviour
 
     void Update()
     {
+
+        // process zoom
         Zoom();
+
+        // process activation
+        if (IsActivating)
+        {
+            // ask for zone info
+            IsActivating = false;
+            var msg = new Message()
+            {
+                c = "zone?",
+                e = 0
+            };
+            Network.Send(msg);
+        }
+
     }
 
     public void Activate()
     {
         // this is fired when the interface is changed to this component
-
-        // ask for zone info
-        var msg = new Message()
-        {
-            c = "zone?",
-            e = 0
-        };
-        Network.Send(msg);
-
+        IsActivating = true;
     }
 
     private void Zoom()
@@ -96,8 +116,23 @@ public class Sensors : MonoBehaviour
 
     public void ReceiveTelemetry(TelemetryPayload payload)
     {
-        Player.transform.position = new Vector3(payload.posx, payload.posy, payload.posz);
-        Player.transform.eulerAngles = new Vector3(payload.rotx, payload.roty, payload.rotz);
+
+        // process player
+        if (payload.id == "00000000-0000-0000-0000-000000000000")
+        {
+            Player.transform.position = new Vector3(payload.posx, payload.posy, payload.posz);
+            Player.transform.eulerAngles = new Vector3(payload.rotx, payload.roty, payload.rotz);
+            return;
+        }
+
+        // process everything else
+        var obj = GameObject.Find(payload.id);
+        if (obj != null)
+        {
+            obj.transform.position = new Vector3(payload.posx, payload.posy, payload.posz);
+            obj.transform.eulerAngles = new Vector3(payload.rotx, payload.roty, payload.rotz);
+        }
+
     }
 
     public void ReceiveZone(string json)
@@ -122,10 +157,20 @@ public class Sensors : MonoBehaviour
                 switch (feature.type)
                 {
                     case "planet":
-                        var pactual = JsonUtility.FromJson<Message<ZoneOfPlanets>>(json);
-                        var planet = Planet.Instantiate(pactual.p.features[i]);
-                        planet.transform.SetParent(Features.transform);
-                        break;
+                        {
+
+                            var pactual = JsonUtility.FromJson<Message<ZoneOfPlanets>>(json);
+                            var planet = Planet.Instantiate(pactual.p.features[i]);
+                            planet.transform.SetParent(Features.transform);
+                            break;
+                        }
+                    case "vessel":
+                        {
+                            var sactual = JsonUtility.FromJson<Message<ZoneOfShips>>(json);
+                            var ship = Ship.Instantiate(sactual.p.features[i]);
+                            ship.transform.SetParent(Features.transform);
+                            break;
+                        }
                 }
             }
         }

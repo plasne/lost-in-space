@@ -1,8 +1,8 @@
 export class Tag {
     public key: string;
-    public value: number;
+    public value: string;
 
-    constructor(key: string, value: number) {
+    constructor(key: string, value: string) {
         this.key = key;
         this.value = value;
     }

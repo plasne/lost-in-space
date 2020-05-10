@@ -23,18 +23,18 @@ var logColors = {
     info: '',
     silly: '\x1b[32m',
     verbose: '\x1b[32m',
-    warn: '\x1b[33m' // yellow
+    warn: '\x1b[33m',
 };
 var transport = new winston.transports.Console({
     format: winston.format.combine(winston.format.timestamp(), winston.format.printf(function (event) {
         var color = logColors[event.level] || '';
         var level = event.level.padStart(7);
         return event.timestamp + " " + color + level + "\u001B[0m: " + event.message;
-    }))
+    })),
 });
 global.logger = winston.createLogger({
     level: LOG_LEVEL,
-    transports: [transport]
+    transports: [transport],
 });
 // define the generic button click
 var ButtonClick = /** @class */ (function () {
@@ -45,17 +45,22 @@ var ButtonClick = /** @class */ (function () {
 }());
 // startup the network
 console.log("LOG_LEVEL is \"" + LOG_LEVEL + "\".");
-var server = new tcp_comm_1.TcpServer({
-    port: 5000
+global.server = new tcp_comm_1.TcpServer({
+    port: 5000,
 });
 // startup
+global.random = function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 global.naming = new Naming_1.Naming();
-var ship = new Ship_1.Ship(server);
-var map = new Map_1.Map();
+global.ship = new Ship_1.Ship();
+global.map = new Map_1.Map();
 // handle network events
-server
+global.server
     .on('listen', function () {
-    global.logger.info("listening on port " + server.port + "...");
+    global.logger.info("listening on port " + global.server.port + "...");
 })
     .on('connect', function (client) {
     global.logger.info("hello from " + client.id + "...");
@@ -63,7 +68,7 @@ server
     .on('disconnect', function (client) {
     if (client) {
         global.logger.info("disconnect from " + client.id + "...");
-        server.remove(client);
+        global.server.remove(client);
     }
 })
     .on('ack', function (msg) {
@@ -74,32 +79,43 @@ server
     global.logger.error(error.stack ? error.stack : error.message);
 })
     .on('cmd:start', function () {
-    map.generate();
+    global.map.generate();
 })
     .on('cmd:zone?', function (client) {
-    if (map.zone) {
-        server.tell(client, 'zone', map.zone);
+    if (global.map.zone) {
+        global.server.tell(client, 'zone', global.map.zone);
     }
 })
     .on('cmd:telemetry', function (_, payload) {
-    var clients = server.clients.filter(function (c) { return c.id != 'mainViewScreen'; });
+    var clients = global.server.clients.filter(function (c) { return c.id != 'mainViewScreen'; });
+    global.ship.receiveTelemetry(payload);
+    if (global.map.zone) {
+        for (var _i = 0, _a = global.map.zone.features; _i < _a.length; _i++) {
+            var feature = _a[_i];
+            feature.receiveTelemetry(payload);
+        }
+    }
     global.logger.info("pass on telemetry to " + clients.length + " clients...");
-    for (var _i = 0, clients_1 = clients; _i < clients_1.length; _i++) {
-        var client = clients_1[_i];
-        server.tell(client, 'telemetry', payload);
+    for (var _b = 0, clients_1 = clients; _b < clients_1.length; _b++) {
+        var client = clients_1[_b];
+        global.server.tell(client, 'telemetry', payload);
     }
 })
     .on('cmd:button', function (_, payload) {
     var qualified = payload.id.split('.');
     var module = qualified[0];
     var action = qualified[1];
-    ship[module].click(action);
+    global.ship[module].click(action);
 })
     .on('cmd:helm', function (client, payload) {
     global.logger.info("from: " + client.id + " - " + payload.yaw + " x " + payload.pitch + " @ " + payload.throttle);
-    ship.helm.fromInterface(payload);
+    global.ship.helm.fromInterface(payload);
+})
+    .on('cmd:tactical', function (client, payload) {
+    global.logger.info("from: " + client.id + " - some tactical stuff");
+    global.ship.tactical.fromInterface(payload);
 });
 // log settings
-global.logger.info("PORT is \"" + server.port + "\".");
+global.logger.info("PORT is \"" + global.server.port + "\".");
 // start listening
-server.listen();
+global.server.listen();
