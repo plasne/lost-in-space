@@ -1,0 +1,183 @@
+fileFormatVersion: 2
+guid: e0094a74b5c38432fb91c20773336c63
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: edf-support-sensors:Layer1
+    100004: edf-support-sensors:Layer2
+    100006: edf-support-sensors:Layer3
+    100008: edf-support-sensors:Layer4
+    100010: edf-support-sensors:Layer5
+    400000: //RootNode
+    400002: edf-support-sensors:Layer1
+    400004: edf-support-sensors:Layer2
+    400006: edf-support-sensors:Layer3
+    400008: edf-support-sensors:Layer4
+    400010: edf-support-sensors:Layer5
+    2300000: //RootNode
+    2300002: edf-support-sensors:Layer1
+    2300004: edf-support-sensors:Layer2
+    2300006: edf-support-sensors:Layer3
+    2300008: edf-support-sensors:Layer4
+    2300010: edf-support-sensors:Layer5
+    3300000: //RootNode
+    3300002: edf-support-sensors:Layer1
+    3300004: edf-support-sensors:Layer2
+    3300006: edf-support-sensors:Layer3
+    3300008: edf-support-sensors:Layer4
+    3300010: edf-support-sensors:Layer5
+    4300000: edf-support-sensors_1
+    4300002: edf-support-sensors:Layer1
+    4300004: edf-support-sensors:Layer2
+    4300006: edf-support-sensors:Layer3
+    4300008: edf-support-sensors:Layer4
+    4300010: edf-support-sensors:Layer5
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-beam
+    second: {fileID: 2100000, guid: ca5bd9e355b3f4135bf49187ee342ecc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-bolt
+    second: {fileID: 2100000, guid: 88ce79710dc3147b9ba0b15b5aad1a79, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-bridge
+    second: {fileID: 2100000, guid: ca5bd9e355b3f4135bf49187ee342ecc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-engines
+    second: {fileID: 2100000, guid: ca5bd9e355b3f4135bf49187ee342ecc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-exhaust
+    second: {fileID: 2100000, guid: f07a5357d6cd4404494082b0eadfa986, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-expel
+    second: {fileID: 2100000, guid: bd658a34046ed40eab723c9ab2f04d84, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-hatch
+    second: {fileID: 2100000, guid: 3a4360ee3c1d34febac15b952a10fe29, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-pods
+    second: {fileID: 2100000, guid: ca5bd9e355b3f4135bf49187ee342ecc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-radar
+    second: {fileID: 2100000, guid: 72e256fb5c846432691061266e9c1575, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-scaffolding
+    second: {fileID: 2100000, guid: 45b5e3ca9f6914ddb995fa32d1c0b55f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-shields
+    second: {fileID: 2100000, guid: d0707df47ac4e45368572713664f2a7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-strips
+    second: {fileID: 2100000, guid: 02848f49500d0406a83b299688e71d27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: edf-support-sensors-supports
+    second: {fileID: 2100000, guid: 8fe55091d862b4b11be0ed2473ad705b, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

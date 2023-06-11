@@ -1,0 +1,23 @@
+{
+  "name": "gameserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^16.1.4",
+    "guid-typescript": "^1.0.9",
+    "project-name-generator": "^2.1.7",
+    "tcp-comm": "git+https://github.com/plasne/tcp-comm.git",
+    "winston": "^3.9.0"
+  },
+  "scripts": {
+    "server": "tsc && node ./dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.3.0",
+    "typescript": "^5.1.3"
+  }
+}

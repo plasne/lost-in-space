@@ -1,0 +1,136 @@
+fileFormatVersion: 2
+guid: e6772b54a5c9f4d9e89928196b396728
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: /Volumes/External_HD/Fleet/Models/grey-minelayer.lwo
+    100002: //RootNode
+    100004: grey-minelayer:Layer1
+    100006: grey-minelayer:Layer2
+    100008: grey-minelayer:Layer3
+    100010: grey-minelayer:Layer4
+    100012: grey-minelayer:Layer5
+    400000: /Volumes/External_HD/Fleet/Models/grey-minelayer.lwo
+    400002: //RootNode
+    400004: grey-minelayer:Layer1
+    400006: grey-minelayer:Layer2
+    400008: grey-minelayer:Layer3
+    400010: grey-minelayer:Layer4
+    400012: grey-minelayer:Layer5
+    2100000: grey-minelayer-body
+    2100002: grey-minelayer-engines
+    2100004: grey-minelayer-dome
+    2100006: grey-minelayer-detail
+    2100008: edf-destroyer-shields
+    2300000: grey-minelayer:Layer1
+    2300002: //RootNode
+    2300004: grey-minelayer:Layer2
+    2300006: grey-minelayer:Layer3
+    2300008: grey-minelayer:Layer4
+    2300010: grey-minelayer:Layer5
+    3300000: grey-minelayer:Layer1
+    3300002: //RootNode
+    3300004: grey-minelayer:Layer2
+    3300006: grey-minelayer:Layer3
+    3300008: grey-minelayer:Layer4
+    3300010: grey-minelayer:Layer5
+    4300000: grey-minelayer:Layer1
+    4300002: grey-minelayer_1
+    4300004: grey-minelayer:Layer2
+    4300006: grey-minelayer:Layer3
+    4300008: grey-minelayer:Layer4
+    4300010: grey-minelayer:Layer5
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: grey-minelayer
+    second: {fileID: 2800000, guid: dda6486a86b49409d81a1fee9842caf9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: grey-minelayer-bump
+    second: {fileID: 2800000, guid: 3840537bd8a76439a99c17e7f27d48d8, type: 3}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
