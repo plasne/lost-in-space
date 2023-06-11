@@ -6,8 +6,8 @@ export class Engine extends PoweredSystem {
     }
 
     // efficiency rating = the amount of thrust produced per each power
-    get thrustEfficiency(): number {
-        return global.ship.effects.sum(`${this.prefix}.thrust-efficiency`);
+    get engineEfficiency(): number {
+        return global.ship.effects.sum(`${this.prefix}.engine-efficiency`);
     }
 
     // efficiency rating = the amount of emit produced for each power
@@ -21,10 +21,10 @@ export class Engine extends PoweredSystem {
         // consume power, produce thrust and emit
         if (global.ship.reactor.reserve >= this.power) {
             global.ship.reactor.reserve -= this.power;
-            var produceThrust = this.power * this.thrustEfficiency;
+            var produceThrust = this.power * this.engineEfficiency;
             global.ship.effects.add(
                 'Engine Thrust',
-                `thrust`,
+                'thrust',
                 produceThrust,
                 1
             );

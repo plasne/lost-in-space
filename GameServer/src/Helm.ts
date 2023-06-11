@@ -111,11 +111,13 @@ export class Helm extends Station {
             (c) => c.id == 'mainViewScreen'
         );
         if (mainViewScreen) {
+            global.logger.warn(`INPUT yaw: ${from.yaw}, pitch: ${from.pitch}`);
             var toMainViewScreen: ToMainViewScreen = {
-                speed: from.throttle * global.ship.thrust + global.ship.speed,
+                speed: from.throttle * global.ship.thrust,
                 yaw: from.yaw * global.ship.agility * 0.75,
                 pitch: from.pitch * global.ship.agility,
             };
+            global.logger.warn(`OUTPUT yaw: ${toMainViewScreen.yaw}, pitch: ${toMainViewScreen.pitch}`);
             global.logger.info(
                 `to: ${mainViewScreen.id} - ${toMainViewScreen.yaw} x ${toMainViewScreen.pitch} @ ${toMainViewScreen.speed}`
             );
