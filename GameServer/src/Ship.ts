@@ -56,12 +56,12 @@ export class Ship extends Feature {
         return this.effects.sum('agility');
     }
 
-    get thrust(): number {
-        return this.effects.sum('thrust');
+    get evade(): number {
+        return this.effects.sum('evade');
     }
 
-    get speed(): number {
-        return this.effects.sum('speed');
+    get thrust(): number {
+        return this.effects.sum('thrust');
     }
 
     public tick() {

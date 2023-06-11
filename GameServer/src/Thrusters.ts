@@ -37,13 +37,13 @@ export class Thrusters extends PoweredSystem {
             var produceEvade = this.power * this.evadeEfficiency;
             global.ship.effects.add(
                 'Thruster Agility',
-                `${this.prefix}.agility`,
+                'agility',
                 produceAgility,
                 1
             );
             global.ship.effects.add(
                 'Thruster Evade',
-                `${this.prefix}.evade`,
+                'evade',
                 produceEvade,
                 1
             );

@@ -7,7 +7,7 @@ export abstract class Action {
 
     public abstract activate(): void;
 
-    public tick(): void {}
+    public tick(): void { }
 }
 
 export class BoosterAction extends Action {
@@ -19,7 +19,7 @@ export class BoosterAction extends Action {
         if (!this.isAvailable) return;
         if (global.ship.reactor.reserve < 50) return;
         global.ship.reactor.reserve -= 50;
-        global.ship.effects.add('Booster', 'speed', 100000, 6); // on for 1 min
+        global.ship.effects.add('Booster', 'thrust', 1000, 6); // on for 1 min
         global.ship.effects.add(
             'Booster Suppression',
             'suppress:booster',
